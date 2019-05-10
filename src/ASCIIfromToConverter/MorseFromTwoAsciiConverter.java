@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ASCIIfromToConverter;
 
-import java.awt.Color;
+import static java.awt.Color.BLUE;
 import java.awt.Dimension;
+import static java.awt.Font.PLAIN;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
@@ -18,7 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
+import static java.lang.Runtime.getRuntime;
+import static java.lang.System.exit;
+import java.util.logging.Logger;
+import static java.util.logging.Logger.getLogger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,16 +26,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import static javax.swing.SwingConstants.CENTER;
+import static javax.swing.SwingUtilities.invokeLater;
 
-/**
- *
- * @author gpaiva
- */
+
 public class MorseFromTwoAsciiConverter extends JFrame {
 
     private static final long serialVersionUID = 1L;
+    private static JTextPane jTextPane = null;
+    private static JTextPane jTextPane1 = null;
+    private static ImageIcon ICON = new ImageIcon("img\\icon.jpg");  //  @jve:decl-index=0:
+    private static ImageIcon BACKGROUND = new ImageIcon("img\\background.jpg");  //  @jve:decl-index=0:
+    private static String LANGUAGE = "MORSE";
+    private static final Logger LOG = getLogger(MorseFromTwoAsciiConverter.class.getName());
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+//		if(args.length==1) {
+//		LANGUAGE = args[0];
+        invokeLater(() -> {
+    MorseFromTwoAsciiConverter thisClass = new MorseFromTwoAsciiConverter();
+    thisClass.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    thisClass.setVisible(true);
+});
+//		}
+//		else System.out.println("java -jar MorseFromTwoAsciiConverter.java [LANGUAGE]");
+    }
 
     private JPanel jContentPane = null;
 
@@ -53,22 +70,13 @@ public class MorseFromTwoAsciiConverter extends JFrame {
 
     private JLabel jLabel1 = null;
 
-    private static JTextPane jTextPane = null;
-
-    private static JTextPane jTextPane1 = null;
-
-    private static ImageIcon ICON = new ImageIcon("img\\icon.jpg");  //  @jve:decl-index=0:
-
-    private static ImageIcon BACKGROUND = new ImageIcon("img\\background.jpg");  //  @jve:decl-index=0:
-
-    private static String LANGUAGE = "MORSE";
 
     /**
      * @throws HeadlessException
      */
     public MorseFromTwoAsciiConverter() throws HeadlessException {
         super();
-        initialize();
+        this.initialize();
     }
 
     /**
@@ -76,7 +84,7 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      */
     public MorseFromTwoAsciiConverter(GraphicsConfiguration arg0) {
         super(arg0);
-        initialize();
+        this.initialize();
     }
 
     /**
@@ -85,7 +93,7 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      */
     public MorseFromTwoAsciiConverter(String arg0) throws HeadlessException {
         super(arg0);
-        initialize();
+        this.initialize();
     }
 
     /**
@@ -94,7 +102,7 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      */
     public MorseFromTwoAsciiConverter(String arg0, GraphicsConfiguration arg1) {
         super(arg0, arg1);
-        initialize();
+        this.initialize();
     }
 
     /**
@@ -103,12 +111,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JScrollPane
      */
     private JScrollPane getJScrollPane() {
-        if (jScrollPane == null) {
-            jScrollPane = new JScrollPane();
-            jScrollPane.setBounds(new Rectangle(15, 60, 136, 136));
-            jScrollPane.setViewportView(getJTextPane());
+        if (this.jScrollPane == null) {
+            this.jScrollPane = new JScrollPane();
+            this.jScrollPane.setBounds(new Rectangle(15, 60, 136, 136));
+            this.jScrollPane.setViewportView(this.getJTextPane());
         }
-        return jScrollPane;
+        return this.jScrollPane;
     }
 
     /**
@@ -117,12 +125,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JScrollPane
      */
     private JScrollPane getJScrollPane1() {
-        if (jScrollPane1 == null) {
-            jScrollPane1 = new JScrollPane();
-            jScrollPane1.setBounds(new Rectangle(300, 60, 136, 136));
-            jScrollPane1.setViewportView(getJTextPane1());
+        if (this.jScrollPane1 == null) {
+            this.jScrollPane1 = new JScrollPane();
+            this.jScrollPane1.setBounds(new Rectangle(300, 60, 136, 136));
+            this.jScrollPane1.setViewportView(this.getJTextPane1());
         }
-        return jScrollPane1;
+        return this.jScrollPane1;
     }
 
     /**
@@ -131,24 +139,24 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JButton
      */
     private JButton getJButton() {
-        if (jButton == null) {
-            jButton = new JButton();
-            jButton.setBounds(new Rectangle(165, 75, 121, 31));
-            jButton.setText("< " + LANGUAGE);
-            jButton.addActionListener((java.awt.event.ActionEvent e) -> {
+        if (this.jButton == null) {
+            this.jButton = new JButton();
+            this.jButton.setBounds(new Rectangle(165, 75, 121, 31));
+            this.jButton.setText("< " + LANGUAGE);
+            this.jButton.addActionListener((java.awt.event.ActionEvent e) -> {
                 // convert text to target language
-                saveFile_JTextPane1();
-                Runtime r = Runtime.getRuntime();
+                this.saveFile_JTextPane1();
+                Runtime r = getRuntime();
                 Process p = null;
                 try {
                     p = r.exec("TEXT2" + LANGUAGE + ".cmd");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    LOG.severe(ex.getMessage());
                 }
-                loadFile_JTextPane();
+                this.loadFile_JTextPane();
             });
         }
-        return jButton;
+        return this.jButton;
     }
 
     /**
@@ -157,24 +165,24 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JButton
      */
     private JButton getJButton1() {
-        if (jButton1 == null) {
-            jButton1 = new JButton();
-            jButton1.setBounds(new Rectangle(165, 150, 121, 31));
-            jButton1.setText("TEXT >");
-            jButton1.addActionListener((java.awt.event.ActionEvent e) -> {
+        if (this.jButton1 == null) {
+            this.jButton1 = new JButton();
+            this.jButton1.setBounds(new Rectangle(165, 150, 121, 31));
+            this.jButton1.setText("TEXT >");
+            this.jButton1.addActionListener((java.awt.event.ActionEvent e) -> {
                 // convert language to text
-                saveFile_JTextPane();
-                Runtime r = Runtime.getRuntime();
+                this.saveFile_JTextPane();
+                Runtime r = getRuntime();
                 Process p = null;
                 try {
                     p = r.exec(LANGUAGE + "2TEXT.cmd");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                } catch (IOException ex) {
+                    LOG.severe(ex.getMessage());
                 }
-                loadFile_JTextPane1();
+                this.loadFile_JTextPane1();
             });
         }
-        return jButton1;
+        return this.jButton1;
     }
 
     /**
@@ -183,19 +191,19 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JButton
      */
     private JButton getJButton2() {
-        if (jButton2 == null) {
-            jButton2 = new JButton();
-            jButton2.setBounds(new Rectangle(180, 225, 91, 31));
-            jButton2.setText("EXIT");
-            jButton2.addActionListener((java.awt.event.ActionEvent e) -> {
+        if (this.jButton2 == null) {
+            this.jButton2 = new JButton();
+            this.jButton2.setBounds(new Rectangle(180, 225, 91, 31));
+            this.jButton2.setText("EXIT");
+            this.jButton2.addActionListener((java.awt.event.ActionEvent e) -> {
                 File file1 = new File("text.txt");
                 File file2 = new File(LANGUAGE + ".txt");
                 file1.delete();
                 file2.delete();
-                System.exit(0);
+                exit(0);
             });
         }
-        return jButton2;
+        return this.jButton2;
     }
 
     /**
@@ -206,7 +214,7 @@ public class MorseFromTwoAsciiConverter extends JFrame {
     private JTextPane getJTextPane() {
         if (jTextPane == null) {
             jTextPane = new JTextPane();
-            loadFile_JTextPane();
+            this.loadFile_JTextPane();
         }
         return jTextPane;
     }
@@ -219,25 +227,11 @@ public class MorseFromTwoAsciiConverter extends JFrame {
     private JTextPane getJTextPane1() {
         if (jTextPane1 == null) {
             jTextPane1 = new JTextPane();
-            loadFile_JTextPane1();
+            this.loadFile_JTextPane1();
         }
         return jTextPane1;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-//		if(args.length==1) {
-//		LANGUAGE = args[0];
-        SwingUtilities.invokeLater(() -> {
-            MorseFromTwoAsciiConverter thisClass = new MorseFromTwoAsciiConverter();
-            thisClass.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            thisClass.setVisible(true);
-        });
-//		}
-//		else System.out.println("java -jar MorseFromTwoAsciiConverter.java [LANGUAGE]");
-    }
 
     /**
      * This method initializes this
@@ -245,7 +239,7 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return void
      */
     private void initialize() {
-        this.setContentPane(getJContentPane());
+        this.setContentPane(this.getJContentPane());
         this.setIconImage(ICON.getImage());
         this.setTitle(LANGUAGE + " TEXT TRANSLATOR");
         this.setBounds(new Rectangle(280, 220, 460, 305));
@@ -258,23 +252,23 @@ public class MorseFromTwoAsciiConverter extends JFrame {
      * @return javax.swing.JPanel
      */
     private JPanel getJContentPane() {
-        if (jContentPane == null) {
-            jLabel1 = new JLabel();
-            jLabel1.setBounds(new Rectangle(315, 15, 106, 31));
-            jLabel1.setToolTipText("");
-            jLabel1.setHorizontalTextPosition(SwingConstants.CENTER);
-            jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
-            jLabel1.setText("TEXT");
-            jLabel1.setForeground(Color.BLUE);
-            jLabel1.setFont(new java.awt.Font("ARIAL BLACK", java.awt.Font.PLAIN, 18));
-            jLabel = new JLabel();
-            jLabel.setBounds(new Rectangle(30, 15, 106, 31));
-            jLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-            jLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            jLabel.setText(LANGUAGE);
-            jLabel.setForeground(Color.BLUE);
-            jLabel.setFont(new java.awt.Font("ARIAL BLACK", java.awt.Font.PLAIN, 18));
-            jContentPane = new JPanel() {
+        if (this.jContentPane == null) {
+            this.jLabel1 = new JLabel();
+            this.jLabel1.setBounds(new Rectangle(315, 15, 106, 31));
+            this.jLabel1.setToolTipText("");
+            this.jLabel1.setHorizontalTextPosition(CENTER);
+            this.jLabel1.setHorizontalAlignment(CENTER);
+            this.jLabel1.setText("TEXT");
+            this.jLabel1.setForeground(BLUE);
+            this.jLabel1.setFont(new java.awt.Font("ARIAL BLACK", PLAIN, 18));
+            this.jLabel = new JLabel();
+            this.jLabel.setBounds(new Rectangle(30, 15, 106, 31));
+            this.jLabel.setHorizontalTextPosition(CENTER);
+            this.jLabel.setHorizontalAlignment(CENTER);
+            this.jLabel.setText(LANGUAGE);
+            this.jLabel.setForeground(BLUE);
+            this.jLabel.setFont(new java.awt.Font("ARIAL BLACK", PLAIN, 18));
+            this.jContentPane = new JPanel() {
                 /**
                  *
                  */
@@ -286,23 +280,23 @@ public class MorseFromTwoAsciiConverter extends JFrame {
                     g.drawImage(BACKGROUND.getImage(), 0, 0, null);
 
                     //  Scale image to size of component
-                    Dimension d = getSize();
+                    Dimension d = this.getSize();
                     g.drawImage(BACKGROUND.getImage(), 0, 0, d.width, d.height, null);
 
                     super.paintComponent(g);
                 }
             };
-            jContentPane.setOpaque(false);
-            jContentPane.setLayout(null);
-            jContentPane.add(getJScrollPane(), null);
-            jContentPane.add(getJScrollPane1(), null);
-            jContentPane.add(getJButton(), null);
-            jContentPane.add(getJButton1(), null);
-            jContentPane.add(getJButton2(), null);
-            jContentPane.add(jLabel, null);
-            jContentPane.add(jLabel1, null);
+            this.jContentPane.setOpaque(false);
+            this.jContentPane.setLayout(null);
+            this.jContentPane.add(this.getJScrollPane(), null);
+            this.jContentPane.add(this.getJScrollPane1(), null);
+            this.jContentPane.add(this.getJButton(), null);
+            this.jContentPane.add(this.getJButton1(), null);
+            this.jContentPane.add(this.getJButton2(), null);
+            this.jContentPane.add(this.jLabel, null);
+            this.jContentPane.add(this.jLabel1, null);
         }
-        return jContentPane;
+        return this.jContentPane;
     }
 
     /**
@@ -314,12 +308,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
         try {
             file.createNewFile();
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                getJTextPane().read(br, null);
+                this.getJTextPane().read(br, null);
             }
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
         }
     }
 
@@ -332,12 +326,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
         try {
             file.createNewFile();
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                getJTextPane1().read(br, null);
+                this.getJTextPane1().read(br, null);
             }
         } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
         } catch (IOException ex) {
-            ex.printStackTrace();
+            LOG.severe(ex.getMessage());
         }
     }
 
@@ -349,12 +343,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
         File file = new File(LANGUAGE + ".txt");
         try {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                getJTextPane().write(bw);
+                this.getJTextPane().write(bw);
             }
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
+            LOG.severe(e1.getMessage());
         } catch (IOException e1) {
-            e1.printStackTrace();
+            LOG.severe(e1.getMessage());
         }
     }
 
@@ -366,12 +360,12 @@ public class MorseFromTwoAsciiConverter extends JFrame {
         File file = new File("text.txt");
         try {
             try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
-                getJTextPane1().write(bw);
+                this.getJTextPane1().write(bw);
             }
         } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
+            LOG.severe(e1.getMessage());
         } catch (IOException e1) {
-            e1.printStackTrace();
+            LOG.severe(e1.getMessage());
         }
     }
 }
