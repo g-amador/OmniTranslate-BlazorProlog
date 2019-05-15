@@ -1,0 +1,35 @@
+                     PROLOG OBJECT-ORIENTED PACKAGE
+                       Author: Ben Staveley-Taylor
+                     Received sometime in early 1987
+                  Shelved on the 10th of December 1987
+                  Updated on the 10th of September 1988
+         with small changes to improve portability suggested by
+         Nick Youd (Cambridge University Engineering Department)
+
+
+POEM comes in four files.
+
+    POEM.PRE        - This file.
+    POEM.TXT        - Documentation.
+    POEM.PL         - The Prolog source of the translator.
+    POEMSHAPES.PL   - A demonstration program.
+
+
+To run  Poem, consult  POEMSHAPES.PL. It consults  POEM.PL right  at the
+start: POEM then translates the  rest of POEMSHAPES; the translated code
+puts out some demonstration answers.
+
+
+CHECKED ON EDINBURGH-COMPATIBLE (POPLOG) PROLOG : yes.
+
+
+PORTABILITY :
+
+    See notes at the top of POEM.PL and POEMSHAPES.PL                   
+
+DOCUMENTATION :
+
+    (1) A separate description of  POEM's class description syntax, main
+    predicates, and how class descriptions are translated into Prolog.
+
+    (2) Comments in the program for important predicates and methods.

@@ -1,0 +1,87 @@
+                     PROLOG OBJECT-ORIENTED PACKAGE
+                       Author: Ben Staveley-Taylor
+                     Received sometime in early 1987
+                  Shelved on the 10th of December 1987
+                  Updated on the 10th of September 1988
+         with small changes to improve portability suggested by
+         Nick Youd (Cambridge University Engineering Department)
+
+
+The Prolog Object-oriented Embedded Manager, POEM, makes available some
+of the features found in languages like Simula-67. Classes may be
+defined, objects (instantiations of classes) created and operated on as
+high- level entities.
+
+An example is often the best way to introduce an idea. Suppose that
+points are to be represented in 2-dimensional Cartesian co-ordinates,
+and only the quadrant 0 <= x,y <= 10 is to be considered:
+
+    class point(X, Y)
+         checks
+              ( X >= 0, X =< 10,
+                Y >= 0, Y =< 10 )
+         body
+              identical( point(X1, Y1) ) =>
+                   ( X1 = X, Y1 = Y )
+          -&-
+              distance2( point(X1, Y1), Dist ) =>
+                   Dist is (X1-X)*(X1-X)+(Y1-Y)*(Y1-Y).
+
+This declaration then sets up a class 'point'. The clauses following
+'checks' are executed whenever a new point object is created, and the
+'checks' goal must succeed for the object to be successfully
+instantiated.
+
+Two predicates are defined to manipulate the class: identical/1 succeeds
+if the argument point structure is the same as the point that owns this
+incarnation of identical/1. distance2/2 instantiates its second argument
+to the square of the distance between the two points.
+
+As in Simula, a hierarchy of classes may be established. This allows
+subclasses to be defined with all the checks and predicates of their
+superclasses, and further subclass specific ones.
+
+For example, suppose a class 'rhombus' has been defined. A rhombus is
+specified by any three of its vertices. Further to this, some operations
+can be defined only for squares owing to their special symmetry. This
+setup could be realised by:
+
+    class rhombus(P1, P2, P3)
+         checks
+              /* ensure that P1, P2, P3 are valid points */
+         body
+             area(A) => /* find the rhombus's area */.
+
+    square(P1, P2, P3) class rhombus
+         checks
+              /* extra checks for squares */
+         body
+              circle(C) => /* find the circumcircle */.
+
+For objects of class 'square', both the predicates 'area' and 'circle'
+are available. Note that all the initialisation checks defined for
+rhombuses are automatically applied to squares too. Extra ones specific
+to squares may be defined.
+
+If class 'square' were to define another predicate 'area', then this new
+version would be executed only on failure of the superclass 'rhombus'
+version of 'area'.
+
+Subclasses must have the same description list as their superclass,
+otherwise the superclass predicates cannot meaningfully be applied.
+[BS-T]
+
+
+CHECKED ON EDINBURGH-COMPATIBLE (POPLOG) PROLOG : yes.
+
+
+PORTABILITY :
+
+    See notes at the top of POEM.PL and POEMSHAPES.PL
+
+DOCUMENTATION :
+
+    (1) A separate description of  POEM's class description syntax, main
+    predicates, and how class descriptions are translated into Prolog.
+
+    (2) Comments in the program for important predicates and methods.

@@ -1,0 +1,17 @@
+/*******************************************
+* Hanoi's Towers
+*  hanoi(height, tower1, tower2, tower3, moves)
+*
+* Example:
+*   hanoi(3, a,b,c, X).
+*
+*******************************************/
+
+hanoi(1, A,B,C,[[A,B]]):-!.
+
+hanoi(N, A,B,C,Moves):-
+    N1 is N - 1,
+    hanoi(N1, A,C,B,Ms1),
+    hanoi(N1, C,B,A,Ms2),
+    append(Ms1, [[A,B]|Ms2], Moves),
+    !.

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<Project>
+    <SourceDirectories>
+        <Directory
+            absolutePath="D:\Progetti\Java\JIProlog\JIProlog3.x\Distribution\JIProlog\samples\HanoisTowers\" relativePath=""/>
+    </SourceDirectories>
+    <LibrarySourceDirectories/>
+    <LibraryClassDirectories>
+        <Directory absolutePath="D:\Progetti\Java\Library\lib\"/>
+        <Directory absolutePath="D:\Progetti\Java\JIProlog\JIProlog3.x\JIProlog\lib\"/>
+    </LibraryClassDirectories>
+    <Target
+        absolutePath="D:\Progetti\Java\JIProlog\JIProlog3.x\Distribution\JIProlog\samples\HanoisTowers\HanoiApp.html"
+        java2DebugVmType="classic" relativePath="HanoiApp.html" targetType="applet"/>
+    <CompilerOptions generateDebugInfo="true" jdk14Assertions="false"
+        maximumHeapSize="128" otherOptions=""
+        showCompilerWarnings="false" showDeprecationWarnings="false"/>
+    <ResourceFilePattern>*.gif</ResourceFilePattern>
+    <ResourceFilePattern>*.jpg</ResourceFilePattern>
+    <ResourceFilePattern>*.xml</ResourceFilePattern>
+    <ResourceFilePattern>*.properties</ResourceFilePattern>
+    <BuildExclusionPattern>CVS</BuildExclusionPattern>
+</Project>
