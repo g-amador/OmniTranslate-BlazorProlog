@@ -1,0 +1,66 @@
+@page "/"
+
+@using OmniTranslate_BlazorProlog.Components.Translator
+@using OmniTranslate_BlazorProlog.Models
+@using OmniTranslate_BlazorProlog.Services
+
+@inject PrologTranslationService Prolog
+@inject TranslationPairProvider Pairs
+
+<MudPaper Class="pa-6" Elevation="4">
+
+    <LanguageSelector @bind-Value="_pair" />
+
+    <MudGrid Class="mt-4">
+        <MudItem xs="12" md="6">
+            <TranslationPanel Label="@_pair.LeftLabel"
+                              Text="@_left"
+                              TextChanged="OnLeftChanged" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <TranslationPanel Label="@_pair.RightLabel"
+                              Text="@_right"
+                              TextChanged="OnRightChanged" />
+        </MudItem>
+    </MudGrid>
+
+    <div class="mt-4 d-flex justify-center">
+        <MudIconButton Icon="@Icons.Material.Filled.SwapHoriz"
+                       Color="Color.Primary"
+                       Size="Size.Large"
+                       OnClick="Swap" />
+    </div>
+
+
+</MudPaper>
+
+@code {
+    TranslationPair _pair;
+    string _left = "";
+    string _right = "";
+
+    protected override void OnInitialized()
+    {
+        _pair = Pairs.DefaultPair;
+    }
+
+    async Task OnLeftChanged(string value)
+    {
+        _left = value;
+        _right = await Prolog.Translate(_pair.ModeLeftToRight, value);
+    }
+
+    async Task OnRightChanged(string value)
+    {
+        _right = value;
+        _left = await Prolog.Translate(_pair.ModeRightToLeft, value);
+    }
+
+    void Swap()
+    {
+        (_left, _right) = (_right, _left);
+        (_pair.LeftLabel, _pair.RightLabel) = (_pair.RightLabel, _pair.LeftLabel);
+        (_pair.ModeLeftToRight, _pair.ModeRightToLeft) = (_pair.ModeRightToLeft, _pair.ModeLeftToRight);
+    }
+}

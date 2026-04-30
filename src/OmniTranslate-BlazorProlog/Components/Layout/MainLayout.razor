@@ -1,9 +1,21 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-@Body
+<MudThemeProvider @bind-IsDarkMode="_isDark" />
+<MudDialogProvider />
+<MudPopoverProvider />
+<MudSnackbarProvider />
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+<MudAppBar Color="Color.Primary">
+    <MudText Typo="Typo.h6">OmniTranslate</MudText>
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
+</MudAppBar>
+
+<div class="m-4">
+    @Body
 </div>
+
+@code {
+    bool _isDark = false;
+    void ToggleDark() => _isDark = !_isDark;
+}

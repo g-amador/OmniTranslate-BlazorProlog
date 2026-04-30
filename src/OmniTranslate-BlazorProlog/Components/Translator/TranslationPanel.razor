@@ -1,0 +1,15 @@
+<MudTextField Label="@Label"
+              Lines="6"
+              FullWidth="true"
+              @bind-Value="Text"
+              @bind-Value:event="oninput" />
+
+<CopyButton TextToCopy="@Text" />
+
+@code {
+    [Parameter] public string Label { get; set; }
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback<string> TextChanged { get; set; }
+
+    // This runs automatically because @bind-Value triggers TextChanged
+}

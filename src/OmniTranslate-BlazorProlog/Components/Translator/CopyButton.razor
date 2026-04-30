@@ -1,0 +1,14 @@
+@inject IJSRuntime JS
+
+<MudIconButton Icon="@Icons.Material.Filled.ContentCopy"
+               Color="Color.Primary"
+               OnClick="Copy" />
+
+@code {
+    [Parameter] public string TextToCopy { get; set; }
+
+    async Task Copy()
+    {
+        await JS.InvokeVoidAsync("copyToClipboard", TextToCopy);
+    }
+}

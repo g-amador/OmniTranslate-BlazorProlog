@@ -1,10 +1,25 @@
+using MudBlazor.Services;
 using OmniTranslate_BlazorProlog.Components;
+using OmniTranslate_BlazorProlog.Services;
+using OmniTranslate_BlazorProlog.Services.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.WebHost.UseStaticWebAssets();
+}
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Add MudBlazor
+builder.Services.AddMudServices();
+
+// Add translation services
+builder.Services.AddSingleton<PrologTranslationService>();
+builder.Services.AddSingleton<TranslationPairProvider>();
 
 var app = builder.Build();
 
@@ -12,15 +27,18 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAntiforgery();
 
 app.MapStaticAssets();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

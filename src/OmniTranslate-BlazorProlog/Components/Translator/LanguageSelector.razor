@@ -1,0 +1,20 @@
+@using OmniTranslate_BlazorProlog.Models
+@using OmniTranslate_BlazorProlog.Services
+
+<MudSelect T="TranslationPair"
+           Label="Translation Mode"
+           @bind-Value="Value"
+           ValueExpression="() => Value">
+
+    @foreach (var p in Pairs.All)
+    {
+        <MudSelectItem Value="@p">@p.DisplayName</MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    [Inject] public TranslationPairProvider Pairs { get; set; }
+
+    [Parameter] public TranslationPair Value { get; set; }
+    [Parameter] public EventCallback<TranslationPair> ValueChanged { get; set; }
+}
