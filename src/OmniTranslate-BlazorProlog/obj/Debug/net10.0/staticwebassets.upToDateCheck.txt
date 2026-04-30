@@ -1,8 +1,0 @@
-wwwroot\app.css
-Components\Layout\ReconnectModal.razor.js
-C:\Users\goncalo.amador\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.7\build\..\_framework\blazor.web.js
-C:\Users\goncalo.amador\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.7\build\..\_framework\blazor.server.js
-C:\Users\goncalo.amador\source\repos\GitHub\OmniTranslate-BlazorProlog\src\OmniTranslate-BlazorProlog\wwwroot\app.css
-C:\Users\goncalo.amador\source\repos\GitHub\OmniTranslate-BlazorProlog\src\OmniTranslate-BlazorProlog\Components\Layout\ReconnectModal.razor.js
-C:\Users\goncalo.amador\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.7\_framework\blazor.web.js
-C:\Users\goncalo.amador\.nuget\packages\microsoft.aspnetcore.app.internal.assets\10.0.7\_framework\blazor.server.js
