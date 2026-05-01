@@ -1,43 +1,75 @@
 using MudBlazor.Services;
 using OmniTranslate_BlazorProlog.Components;
 using OmniTranslate_BlazorProlog.Services;
+using OmniTranslate_BlazorProlog.Services.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/// <summary>
+/// In development, enable static web assets so Razor components
+/// and referenced resources are served correctly.
+/// </summary>
 if (builder.Environment.IsDevelopment())
 {
     builder.WebHost.UseStaticWebAssets();
 }
 
-// Add services to the container.
+/// <summary>
+/// Registers Razor Components and enables interactive server rendering.
+/// </summary>
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Add MudBlazor
+/// <summary>
+/// Registers MudBlazor services (dialogs, snackbars, theming, etc.).
+/// </summary>
 builder.Services.AddMudServices();
 
-// Add translation services
+/// <summary>
+/// Registers translation-related services as singletons.
+/// These remain alive for the lifetime of the application.
+/// </summary>
 builder.Services.AddSingleton<PrologTranslationService>();
 builder.Services.AddSingleton<TranslationModeProvider>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+/// <summary>
+/// Configures the HTTP request pipeline.
+/// Production uses a custom error handler and HSTS.
+/// </summary>
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     app.UseHsts();
 }
 
+/// <summary>
+/// Redirects unknown status codes (404, etc.) to the Not Found page.
+/// </summary>
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
+
 app.UseHttpsRedirection();
 
+/// <summary>
+/// Serves static files such as CSS, JS, images, and Prolog files.
+/// </summary>
 app.UseStaticFiles();
 
+/// <summary>
+/// Enables antiforgery protection for interactive components.
+/// </summary>
 app.UseAntiforgery();
 
+/// <summary>
+/// Maps static assets for Razor Components.
+/// </summary>
 app.MapStaticAssets();
 
+/// <summary>
+/// Maps the root Razor Component (App.razor) and enables
+/// interactive server rendering mode.
+/// </summary>
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

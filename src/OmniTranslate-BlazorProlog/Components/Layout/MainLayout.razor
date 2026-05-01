@@ -1,26 +1,42 @@
 @inherits LayoutComponentBase
 
+<!-- Provides theme switching (light/dark) across the entire app -->
 <MudThemeProvider @bind-IsDarkMode="_isDark" />
+
+<!-- Required MudBlazor service providers -->
 <MudDialogProvider />
 <MudPopoverProvider />
 <MudSnackbarProvider />
 
+<!-- Top App Bar (fixed by default) -->
 <MudAppBar Color="Color.Primary">
+    <!-- App title -->
     <MudText Typo="Typo.h6">OmniTranslate</MudText>
+
+    <!-- Pushes the dark mode button to the right -->
     <MudSpacer />
+
+    <!-- Toggle dark/light theme -->
     <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
 </MudAppBar>
 
+<!-- Main content area -->
+<!-- Extra top padding ensures content is not hidden behind the fixed AppBar -->
 <div class="m-4" style="padding-top: 60px;">
     @Body
 </div>
 
+<!-- Bottom App Bar (empty for now) -->
+<!-- Fixed=true keeps it anchored to the bottom of the viewport -->
 <MudAppBar Color="Color.Primary"
            Bottom="true"
            Fixed="true">
 </MudAppBar>
 
 @code {
+    // Tracks whether the UI is in dark mode
     bool _isDark = false;
+
+    // Toggles between light and dark themes
     void ToggleDark() => _isDark = !_isDark;
 }

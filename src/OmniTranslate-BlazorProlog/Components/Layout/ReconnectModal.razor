@@ -1,31 +1,57 @@
-﻿<script type="module" src="@Assets["Components/Layout/ReconnectModal.razor.js"]"></script>
+<!-- Loads the JavaScript that controls the reconnection modal behavior -->
+<script type="module" src="@Assets["Components/Layout/ReconnectModal.razor.js"]"></script>
 
+<!--
+    This <dialog> is used by Blazor's built‑in circuit reconnection system.
+    It becomes visible automatically when the SignalR connection drops.
+-->
 <dialog id="components-reconnect-modal" data-nosnippet>
+
+    <!-- Container for all reconnect UI states -->
     <div class="components-reconnect-container">
+
+        <!-- Small animation shown during reconnection attempts -->
         <div class="components-rejoining-animation" aria-hidden="true">
             <div></div>
             <div></div>
         </div>
+
+        <!-- First reconnect attempt message -->
         <p class="components-reconnect-first-attempt-visible">
             Rejoining the server...
         </p>
+
+        <!-- Message shown when multiple reconnect attempts fail -->
         <p class="components-reconnect-repeated-attempt-visible">
-            Rejoin failed... trying again in <span id="components-seconds-to-next-attempt"></span> seconds.
+            Rejoin failed... trying again in
+            <span id="components-seconds-to-next-attempt"></span> seconds.
         </p>
+
+        <!-- Shown when reconnection completely fails -->
         <p class="components-reconnect-failed-visible">
             Failed to rejoin.<br />Please retry or reload the page.
         </p>
+
+        <!-- Retry button for manual reconnection -->
         <button id="components-reconnect-button" class="components-reconnect-failed-visible">
             Retry
         </button>
+
+        <!-- Shown when the server intentionally pauses the session -->
         <p class="components-pause-visible">
             The session has been paused by the server.
         </p>
+
+        <!-- Shown when resuming the paused session fails -->
         <p class="components-resume-failed-visible">
             Failed to resume the session.<br />Please retry or reload the page.
         </p>
-        <button id="components-resume-button" class="components-pause-visible components-resume-failed-visible">
+
+        <!-- Resume button for paused sessions -->
+        <button id="components-resume-button"
+                class="components-pause-visible components-resume-failed-visible">
             Resume
         </button>
+
     </div>
 </dialog>

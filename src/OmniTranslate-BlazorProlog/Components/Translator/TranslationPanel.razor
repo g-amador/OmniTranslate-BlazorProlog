@@ -1,3 +1,9 @@
+<!--
+    Main text input area for a translation panel
+    - Bound to the parent via Value / ValueChanged
+    - Lines controls the visible height
+    - FullWidth ensures it expands to the container width
+-->
 <MudTextField T="string"
               Label="@Label"
               Lines="15"
@@ -5,10 +11,26 @@
               Value="@Text"
               ValueChanged="@(value => TextChanged.InvokeAsync(value))" />
 
+<!--
+    Copy-to-clipboard button
+    - Copies the current panel text
+    - Useful for quickly exporting translations
+-->
 <CopyButton TextToCopy="@Text" />
 
 @code {
+    /// <summary>
+    /// Label displayed above the text field (e.g., "English", "Morse")
+    /// </summary>
     [Parameter] public string Label { get; set; }
+    
+    /// <summary>
+    /// The text currently inside the panel
+    /// </summary>
     [Parameter] public string Text { get; set; }
+
+    /// <summary>
+    /// Event callback used to notify the parent component when the text changes
+    /// </summary>
     [Parameter] public EventCallback<string> TextChanged { get; set; }
 }

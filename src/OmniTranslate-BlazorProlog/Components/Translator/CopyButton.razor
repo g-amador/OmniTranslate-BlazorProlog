@@ -1,12 +1,20 @@
 @inject IJSRuntime JS
 
+<!--
+    Copy-to-clipboard button
+    - Calls the Copy() method when clicked
+    - Uses a Material icon for visual clarity
+-->
 <MudIconButton Icon="@Icons.Material.Filled.ContentCopy"
                Color="Color.Primary"
                OnClick="Copy" />
 
 @code {
+    // Text that will be copied to the clipboard
     [Parameter] public string TextToCopy { get; set; }
 
+    // Invokes a JavaScript function to copy text to the clipboard
+    // Requires a JS function named "copyToClipboard" to exist in your scripts
     async Task Copy()
     {
         await JS.InvokeVoidAsync("copyToClipboard", TextToCopy);
