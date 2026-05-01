@@ -1,8 +1,9 @@
-<MudTextField Label="@Label"
-              Lines="6"
+<MudTextField T="string"
+              Label="@Label"
+              Lines="15"
               FullWidth="true"
-              @bind-Value="Text"
-              @bind-Value:event="oninput" />
+              Value="@Text"
+              ValueChanged="@(value => TextChanged.InvokeAsync(value))" />
 
 <CopyButton TextToCopy="@Text" />
 
@@ -10,6 +11,4 @@
     [Parameter] public string Label { get; set; }
     [Parameter] public string Text { get; set; }
     [Parameter] public EventCallback<string> TextChanged { get; set; }
-
-    // This runs automatically because @bind-Value triggers TextChanged
 }

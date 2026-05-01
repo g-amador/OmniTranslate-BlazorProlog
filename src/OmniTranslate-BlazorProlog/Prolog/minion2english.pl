@@ -1,4 +1,4 @@
-% ENGLISH → MINION DICTIONARY
+% ENGLISH -> MINION DICTIONARY
 
 minion_word(hello, "bello").
 minion_word(hi, "poopaye").
@@ -27,14 +27,14 @@ character(Char) -->
       atom_codes(Char, [C])
     }.
 
-% Known English word → translate to Minion
+% Known English word -> translate to Minion
 word(Minion) -->
     sequence(Letters),
     {
         atom_chars(EngAtom, Letters),
         (   minion_word(EngAtom, Minion)
         ->  true
-        ;   Minion = EngAtom      % unknown → keep original
+        ;   Minion = EngAtom      % unknown -> keep original
         )
     }.
 

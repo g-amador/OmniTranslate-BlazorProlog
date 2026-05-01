@@ -1,7 +1,6 @@
 using MudBlazor.Services;
 using OmniTranslate_BlazorProlog.Components;
 using OmniTranslate_BlazorProlog.Services;
-using OmniTranslate_BlazorProlog.Services.Providers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +18,7 @@ builder.Services.AddMudServices();
 
 // Add translation services
 builder.Services.AddSingleton<PrologTranslationService>();
-builder.Services.AddSingleton<TranslationPairProvider>();
+builder.Services.AddSingleton<TranslationModeProvider>();
 
 var app = builder.Build();
 

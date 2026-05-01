@@ -1,4 +1,4 @@
-% TEXT → MORSE
+% TEXT -> MORSE
 
 code('.-', a).
 code('-...', b).
@@ -61,7 +61,7 @@ symbol(M) -->
       code(M, A)
     }.
 
-% Unknown character → return it unchanged
+% Unknown character -> return it unchanged
 symbol(Unknown) -->
     [C],
     { char_code(Unknown, C) }.
@@ -83,6 +83,6 @@ decode_words([], []).
 decode_words([M|R], [C|Rest]) :-
     (   code(M, C)          % known Morse
     ->  true
-    ;   C = M               % unknown → keep as-is
+    ;   C = M               % unknown -> keep as-is
     ),
     decode_words(R, Rest).

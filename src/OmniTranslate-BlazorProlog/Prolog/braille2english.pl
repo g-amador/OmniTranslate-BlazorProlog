@@ -1,4 +1,4 @@
-% BRAILLE → TEXT
+% BRAILLE -> TEXT
 
 % same braille/2 facts as above
 
@@ -10,14 +10,14 @@ digit('1') --> "1".
 braille_cell([A,B,C,D,E,F]) -->
     digit(A), digit(B), digit(C), digit(D), digit(E), digit(F).
 
-% Known Braille → letter
+% Known Braille -> letter
 braille_letter(Char) -->
     braille_cell(Cell),
     {
         atom_chars(Pattern, Cell),
         (   braille(Char, Pattern)
         ->  true
-        ;   Char = Pattern   % unknown → preserve
+        ;   Char = Pattern   % unknown -> preserve
         )
     }.
 

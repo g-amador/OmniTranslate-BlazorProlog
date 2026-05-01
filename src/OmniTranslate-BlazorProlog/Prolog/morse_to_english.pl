@@ -1,4 +1,4 @@
-% MORSE → TEXT
+% MORSE -> TEXT
 
 % Known Morse codes
 code(a, ".-").
@@ -55,7 +55,7 @@ morse_letter(Char) -->
     { atom_chars(Atom, Seq),
       (   code(Char, Atom)      % known Morse
       ->  true
-      ;   Char = Atom           % unknown → keep as-is
+      ;   Char = Atom           % unknown -> keep as-is
       )
     }.
 

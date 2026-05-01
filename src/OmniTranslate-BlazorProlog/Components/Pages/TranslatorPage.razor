@@ -5,62 +5,107 @@
 @using OmniTranslate_BlazorProlog.Services
 
 @inject PrologTranslationService Prolog
-@inject TranslationPairProvider Pairs
+@inject TranslationModeProvider ModeProvider
 
 <MudPaper Class="pa-6" Elevation="4">
 
-    <LanguageSelector @bind-Value="_pair" />
+    <!-- Translation Mode Dropdown -->
+    <MudSelect T="TranslationMode"
+               Label="Translation Mode"
+               @bind-Value="_mode"
+               ToStringFunc="m => m.Label"
+               Class="mb-4">
 
+        @foreach (var m in ModeProvider.Modes
+            .GroupBy(x => x.Label)
+            .Select(g => g.First()))
+        {
+            <MudSelectItem Value="m">@m.Label</MudSelectItem>
+        }
+    </MudSelect>
+
+    <!-- Panels -->
     <MudGrid Class="mt-4">
         <MudItem xs="12" md="6">
-            <TranslationPanel Label="@_pair.LeftLabel"
+            <TranslationPanel Label="@_mode.From"
                               Text="@_left"
                               TextChanged="OnLeftChanged" />
         </MudItem>
 
         <MudItem xs="12" md="6">
-            <TranslationPanel Label="@_pair.RightLabel"
+            <TranslationPanel Label="@_mode.To"
                               Text="@_right"
                               TextChanged="OnRightChanged" />
         </MudItem>
     </MudGrid>
 
+    <!-- Swap Button -->
     <div class="mt-4 d-flex justify-center">
         <MudIconButton Icon="@Icons.Material.Filled.SwapHoriz"
                        Color="Color.Primary"
                        Size="Size.Large"
-                       OnClick="Swap" />
+                       OnClick="Translate" />
     </div>
-
 
 </MudPaper>
 
 @code {
-    TranslationPair _pair;
+    TranslationMode _mode;
     string _left = "";
     string _right = "";
 
     protected override void OnInitialized()
     {
-        _pair = Pairs.DefaultPair;
+        _mode = ModeProvider.Default;
     }
 
     async Task OnLeftChanged(string value)
     {
         _left = value;
-        _right = await Prolog.Translate(_pair.ModeLeftToRight, value);
+
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            _right = await Prolog.Translate(_mode.Id, value);
+        }
+        // else: do NOT clear _right
     }
 
     async Task OnRightChanged(string value)
     {
         _right = value;
-        _left = await Prolog.Translate(_pair.ModeRightToLeft, value);
+
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            var reverse = GetReverseMode(_mode);
+            _left = await Prolog.Translate(reverse.Id, value);
+        }
+        // else: do NOT clear _left
     }
 
-    void Swap()
+    async Task Translate()
     {
-        (_left, _right) = (_right, _left);
-        (_pair.LeftLabel, _pair.RightLabel) = (_pair.RightLabel, _pair.LeftLabel);
-        (_pair.ModeLeftToRight, _pair.ModeRightToLeft) = (_pair.ModeRightToLeft, _pair.ModeLeftToRight);
+        // Case 1: left is filled, right empty
+        if (!string.IsNullOrWhiteSpace(_left) && string.IsNullOrWhiteSpace(_right))
+        {
+            _right = await Prolog.Translate(_mode.Id, _left);
+            return;
+        }
+
+        // Case 2: right is filled, left empty
+        if (!string.IsNullOrWhiteSpace(_right) && string.IsNullOrWhiteSpace(_left))
+        {
+            var reverse = GetReverseMode(_mode);
+            _left = await Prolog.Translate(reverse.Id, _right);
+            return;
+        }
+
+        // Case 3: both filled -> translate left -> right
+        if (!string.IsNullOrWhiteSpace(_left) && !string.IsNullOrWhiteSpace(_right))
+        {
+            _right = await Prolog.Translate(_mode.Id, _left);
+        }
     }
+
+    TranslationMode GetReverseMode(TranslationMode m)
+        => ModeProvider.Modes.First(x => x.From == m.To && x.To == m.From);
 }

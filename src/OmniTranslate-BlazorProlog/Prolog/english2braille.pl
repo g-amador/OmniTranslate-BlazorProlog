@@ -1,4 +1,4 @@
-% TEXT → BRAILLE (6‑dot patterns)
+% TEXT -> BRAILLE (6‑dot patterns)
 
 braille(a, "100000").
 braille(b, "110000").
@@ -58,7 +58,7 @@ character(Char) -->
       atom_codes(Char, [C])
     }.
 
-% Unknown character → keep as-is
+% Unknown character -> keep as-is
 character(Char) -->
     [C],
     { atom_codes(Char, [C]) }.
@@ -70,7 +70,7 @@ word([B])   --> character(C), { convert_char(C, B) }.
 convert_char(Char, Braille) :-
     (   braille(Char, Braille)
     ->  true
-    ;   Braille = Char   % unknown → preserve
+    ;   Braille = Char   % unknown -> preserve
     ).
 
 % A phrase is words separated by spaces

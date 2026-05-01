@@ -1,4 +1,4 @@
-% ORC → TEXT DICTIONARY
+% ORC -> TEXT DICTIONARY
 
 orc_word(hi, charach).
 orc_word(bye, futchi).
@@ -31,14 +31,14 @@ character(Char) -->
       atom_codes(Char, [C])
     }.
 
-% Known Orc word → translate to English
+% Known Orc word -> translate to English
 word(English) -->
     sequence(Letters),
     {
         atom_chars(OrcAtom, Letters),
         (   orc_word(English, OrcAtom)
         ->  true
-        ;   English = OrcAtom      % unknown → keep original
+        ;   English = OrcAtom      % unknown -> keep original
         )
     }.
 

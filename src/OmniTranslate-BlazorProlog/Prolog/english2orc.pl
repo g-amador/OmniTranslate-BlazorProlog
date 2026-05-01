@@ -30,13 +30,13 @@ character(Char) -->
       atom_codes(Char, [C])
     }.
 
-% Known word → translate to Orc
+% Known word -> translate to Orc
 word(Orc) -->
     sequence(Letters),
     { atom_chars(Atom, Letters),
       (   orc_word(Atom, Orc)
       ->  true
-      ;   Orc = Atom        % unknown → keep original
+      ;   Orc = Atom        % unknown -> keep original
       )
     }.
 

@@ -11,9 +11,14 @@
     <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
 </MudAppBar>
 
-<div class="m-4">
+<div class="m-4" style="padding-top: 60px;">
     @Body
 </div>
+
+<MudAppBar Color="Color.Primary"
+           Bottom="true"
+           Fixed="true">
+</MudAppBar>
 
 @code {
     bool _isDark = false;
