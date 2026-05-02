@@ -206,7 +206,7 @@ cat
 
 📘 ⠿
 
-⠓⠑⠇⠇⠕
+⠉ ⠁ ⠞
 
 [Back to Table of contents](#toc)
 
