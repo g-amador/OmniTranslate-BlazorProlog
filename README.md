@@ -64,76 +64,76 @@ This project is ideal for:
 
 ## 📁 <a name="folder-structure">Folder Structure
 
-OmniTranslate-BlazorProlog/                               # Main repository
-│
-├── LICENSE                                               # MIT license
-├── README.md                                             # Project documentation
-│
-└── src/                                                  # Application source code
+    OmniTranslate-BlazorProlog/                               # Main repository
     │
-    ├── wwwroot/                                          # Static web assets
-    │   │
-    │   ├── app.css                                       # Global stylesheet
-    │   │
-    │   └── js/                                           # JavaScript utilities
-    │       ├── clipboard.js                              # Clipboard helper for copy buttons
-    │       └── screen.js                                 # Auto-resize and UI utilities
+    ├── LICENSE                                               # MIT license
+    ├── README.md                                             # Project documentation
     │
-    ├── Components/                                       # Blazor UI components
-    │   │
-    │   ├── _Imports.razor                                # Shared Razor imports
-    │   ├── App.razor                                     # Blazor application root
-    │   ├── Routes.razor                                  # Application routing
-    │   │
-    │   ├── Layout/                                       # Application layout components
-    │   │   ├── MainLayout.razor                          # Main layout wrapper
-    │   │   └── ReconnectModal.razor                      # Connection recovery UI
-    │   │
-    │   ├── Pages/                                        # Route-level pages
-    │   │   ├── Error.razor                               # Error page
-    │   │   ├── NotFound.razor                            # 404 page
-    │   │   └── TranslatorPage.razor                      # Main translation interface
-    │   │
-    │   └── Translator/                                   # Components used by TranslatorPage
-    │       ├── CopyButton.razor                          # Copy-to-clipboard button
-    │       ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
-    │       └── TranslationPanel.razor                    # Input/output text areas
-    │
-    ├── Models/
-    │   └── TranslationMode.cs                            # Enum/model defining translation modes
-    │
-    ├── Prolog/                                           # Prolog dictionaries (language rules)
-    │   ├── braille.pl                                    # Braille dictionary
-    │   ├── minion.pl                                     # Minion dictionary
-    │   ├── morse.pl                                      # Morse dictionary
-    │   └── orc.pl                                        # Orc dictionary
-    │
-    ├── Services/                                         # Application services
-    │   │
-    │   ├── TranslationModeProvider.cs                    # Provides active translation mode
-    │   ├── TranslationRegistry.cs                        # Registers available translators
-    │   │
-    │   ├── Implementations/                              # Concrete service implementations
-    │   │   │
-    │   │   ├── Translators/                              # C# translators (English <-> X)
-    │   │   │   ├── BrailleToEnglishTranslator.cs         # Braille → English
-    │   │   │   ├── EnglishToBrailleTranslator.cs         # English → Braille
-    │   │   │   ├── EnglishToMinionTranslator.cs          # English → Minion
-    │   │   │   ├── EnglishToMorseTranslator.cs           # English → Morse
-    │   │   │   ├── EnglishToOrcTranslator.cs             # English → Orc
-    │   │   │   ├── MinionToEnglishTranslator.cs          # Minion → English
-    │   │   │   ├── MorseToEnglishTranslator.cs           # Morse → English
-    │   │   │   └── OrcToEnglishTranslator.cs             # Orc → English
-    │   │   │
-    │   │   └── PrologTranslationService.cs               # Executes Prolog queries
-    │   │
-    │   └── Interfaces/                                   # Interfaces and abstractions
-    │       │
-    │       ├── IPrologTranslationService.cs              # Interface for Prolog execution service
-    │       └── ITranslator.cs                            # Base interface for all translators
-    │
-    ├── appsettings.json                                  # Application configuration
-    └── Program.cs                                        # Application entry point
+    └── src/                                                  # Application source code
+        │
+        ├── wwwroot/                                          # Static web assets
+        │   │
+        │   ├── app.css                                       # Global stylesheet
+        │   │
+        │   └── js/                                           # JavaScript utilities
+        │       ├── clipboard.js                              # Clipboard helper for copy buttons
+        │       └── screen.js                                 # Auto-resize and UI utilities
+        │
+        ├── Components/                                       # Blazor UI components
+        │   │
+        │   ├── _Imports.razor                                # Shared Razor imports
+        │   ├── App.razor                                     # Blazor application root
+        │   ├── Routes.razor                                  # Application routing
+        │   │
+        │   ├── Layout/                                       # Application layout components
+        │   │   ├── MainLayout.razor                          # Main layout wrapper
+        │   │   └── ReconnectModal.razor                      # Connection recovery UI
+        │   │
+        │   ├── Pages/                                        # Route-level pages
+        │   │   ├── Error.razor                               # Error page
+        │   │   ├── NotFound.razor                            # 404 page
+        │   │   └── TranslatorPage.razor                      # Main translation interface
+        │   │
+        │   └── Translator/                                   # Components used by TranslatorPage
+        │       ├── CopyButton.razor                          # Copy-to-clipboard button
+        │       ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
+        │       └── TranslationPanel.razor                    # Input/output text areas
+        │
+        ├── Models/
+        │   └── TranslationMode.cs                            # Enum/model defining translation modes
+        │
+        ├── Prolog/                                           # Prolog dictionaries (language rules)
+        │   ├── braille.pl                                    # Braille dictionary
+        │   ├── minion.pl                                     # Minion dictionary
+        │   ├── morse.pl                                      # Morse dictionary
+        │   └── orc.pl                                        # Orc dictionary
+        │
+        ├── Services/                                         # Application services
+        │   │
+        │   ├── TranslationModeProvider.cs                    # Provides active translation mode
+        │   ├── TranslationRegistry.cs                        # Registers available translators
+        │   │
+        │   ├── Implementations/                              # Concrete service implementations
+        │   │   │
+        │   │   ├── Translators/                              # C# translators (English <-> X)
+        │   │   │   ├── BrailleToEnglishTranslator.cs         # Braille → English
+        │   │   │   ├── EnglishToBrailleTranslator.cs         # English → Braille
+        │   │   │   ├── EnglishToMinionTranslator.cs          # English → Minion
+        │   │   │   ├── EnglishToMorseTranslator.cs           # English → Morse
+        │   │   │   ├── EnglishToOrcTranslator.cs             # English → Orc
+        │   │   │   ├── MinionToEnglishTranslator.cs          # Minion → English
+        │   │   │   ├── MorseToEnglishTranslator.cs           # Morse → English
+        │   │   │   └── OrcToEnglishTranslator.cs             # Orc → English
+        │   │   │
+        │   │   └── PrologTranslationService.cs               # Executes Prolog queries
+        │   │
+        │   └── Interfaces/                                   # Interfaces and abstractions
+        │       │
+        │       ├── IPrologTranslationService.cs              # Interface for Prolog execution service
+        │       └── ITranslator.cs                            # Base interface for all translators
+        │
+        ├── appsettings.json                                  # Application configuration
+        └── Program.cs                                        # Application entry point
 
 
 [Back to Table of contents](#toc)
