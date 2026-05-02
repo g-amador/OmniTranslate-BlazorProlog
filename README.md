@@ -11,6 +11,8 @@ The system supports:
 - Modular translator architecture  
 - Prolog‑powered dictionaries  
 
+![OmniTranslate Demo](./assets/demo.gif)
+
 ---
 
 ## 📑 <a name="toc">Table of Contents
