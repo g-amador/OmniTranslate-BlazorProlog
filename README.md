@@ -154,7 +154,7 @@ Below are simple examples showing **input** and **expected output** for each tra
 
 Hi, warrior! Buy a weapon.
 
-<br><br>
+<br>
 
 🧌
 
@@ -170,7 +170,7 @@ charach, warrior! goshak a porack.
 
 Hello, friend!
 
-
+<br>
 
 🍌
 
@@ -186,7 +186,7 @@ bello, friend!
 
 SOS
 
-
+<br>
 
 • — 
 
@@ -202,7 +202,7 @@ SOS
 
 cat
 
-
+<br>
 
 📘 ⠿
 
