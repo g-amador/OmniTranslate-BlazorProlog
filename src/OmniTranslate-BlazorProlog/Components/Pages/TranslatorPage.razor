@@ -9,7 +9,7 @@
 @inject TranslationModeProvider ModeProvider
 
 <!-- Main translation container -->
-<MudPaper Class="pa-6" Elevation="4">
+<MudPaper Class="panel-container" Style="height: 100%; padding: 15px; margin: 16px; border-radius: 12px;" Elevation="4">
 
     <!--
         Translation Mode Dropdown
@@ -18,10 +18,12 @@
         - Modes are grouped by Label to avoid duplicates
     -->
     <MudSelect T="TranslationMode"
-               Label="Translation Mode"
-               @bind-Value="_mode"
-               ToStringFunc="m => m.Label"
-               Class="mb-4">
+                Label="Translation Mode"
+                Value="_mode"
+                ValueChanged="OnModeChanged"
+                ValueExpression="@(() => _mode)"
+                ToStringFunc="m => m.Label"
+                Class="mb-4">
 
         @foreach (var m in ModeProvider.Modes
             .GroupBy(x => x.Label)
@@ -40,14 +42,14 @@
     <MudGrid Class="mt-4">
         <MudItem xs="12" md="6">
             <TranslationPanel Label="@_mode.From"
-                              Text="@_left"
-                              TextChanged="OnLeftChanged" />
+                                Text="@_left"
+                                TextChanged="OnLeftChanged" />
         </MudItem>
 
         <MudItem xs="12" md="6">
             <TranslationPanel Label="@_mode.To"
-                              Text="@_right"
-                              TextChanged="OnRightChanged" />
+                                Text="@_right"
+                                TextChanged="OnRightChanged" />
         </MudItem>
     </MudGrid>
 
@@ -58,9 +60,9 @@
     -->
     <div class="mt-4 d-flex justify-center">
         <MudIconButton Icon="@Icons.Material.Filled.SwapHoriz"
-                       Color="Color.Primary"
-                       Size="Size.Large"
-                       OnClick="Translate" />
+                        Color="Color.Primary"
+                        Size="Size.Large"
+                        OnClick="Translate" />
     </div>
 
 </MudPaper>
@@ -77,6 +79,15 @@
     protected override void OnInitialized()
     {
         _mode = ModeProvider.Default;
+    }
+
+    private void OnModeChanged(TranslationMode newMode)
+    {
+        _mode = newMode;
+
+        // Clear both text areas
+        _left = "";
+        _right = "";
     }
 
     // Called whenever the left panel text changes

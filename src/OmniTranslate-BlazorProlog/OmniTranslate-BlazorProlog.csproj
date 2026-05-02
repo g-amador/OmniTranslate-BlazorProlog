@@ -10,10 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Prolog\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CSProlog" Version="6.0.0" />
     <PackageReference Include="MudBlazor" Version="9.4.0" />
   </ItemGroup>

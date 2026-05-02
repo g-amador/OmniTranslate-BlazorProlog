@@ -1,3 +1,46 @@
+/* Ensure the app occupies the full viewport height */
+html, body, #app {
+    height: 100%;
+    margin: 0;
+}
+
+.layout-root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Top bar is fixed, so we must manually offset the body */
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px; /* MudBlazor default */
+    z-index: 1000;
+}
+
+/* Bottom bar also fixed */
+.bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    min-height: 32px;
+    z-index: 1000;
+}
+
+/* Body fills the space between the two bars */
+.layout-body {
+    flex: 1 1 auto;
+    margin-top: 64px; /* offset for top bar */
+    margin-bottom: 32px; /* offset for bottom bar */
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
 h1:focus {
     outline: none;
 }

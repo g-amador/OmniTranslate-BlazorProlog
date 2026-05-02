@@ -1,42 +1,54 @@
 @inherits LayoutComponentBase
 
-<!-- Provides theme switching (light/dark) across the entire app -->
+<!-- Theme provider (light/dark mode) -->
 <MudThemeProvider @bind-IsDarkMode="_isDark" />
 
-<!-- Required MudBlazor service providers -->
+<!-- MudBlazor service providers (dialogs, popovers, snackbars) -->
 <MudDialogProvider />
 <MudPopoverProvider />
 <MudSnackbarProvider />
 
-<!-- Top App Bar (fixed by default) -->
-<MudAppBar Color="Color.Primary">
-    <!-- App title -->
-    <MudText Typo="Typo.h6">OmniTranslate</MudText>
+<!--
+    Root layout container.
+    We use a custom div instead of MudMainContent here because
+    we want FULL control over flex behavior.
+-->
+<div class="layout-root">
 
-    <!-- Pushes the dark mode button to the right -->
-    <MudSpacer />
+    <!--
+        TOP APP BAR
+        - Fixed height (MudBlazor default ~64px)
+        - flex: 0 0 auto → height does NOT stretch
+    -->
+    <MudAppBar Color="Color.Primary" Class="top-bar">
+        <MudText Typo="Typo.h6">OmniTranslate</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
+    </MudAppBar>
 
-    <!-- Toggle dark/light theme -->
-    <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
-</MudAppBar>
+    <!--
+        BODY AREA
+        - flex: 1 1 auto → fills ALL remaining space
+        - overflow: auto → scrolls internally if needed
+        - This is the key to stable layout across zoom levels
+    -->
+    <MudPaper Class="layout-body">
+        @Body
+    </MudPaper>
 
-<!-- Main content area -->
-<!-- Extra top padding ensures content is not hidden behind the fixed AppBar -->
-<div class="m-4" style="padding-top: 60px;">
-    @Body
+    <!--
+        BOTTOM APP BAR
+        - Smaller height (customizable)
+        - flex: 0 0 auto → height stays constant
+    -->
+    <MudAppBar Color="Color.Primary"
+               Bottom="true"
+               Class="bottom-bar">
+    </MudAppBar>
+
 </div>
 
-<!-- Bottom App Bar (empty for now) -->
-<!-- Fixed=true keeps it anchored to the bottom of the viewport -->
-<MudAppBar Color="Color.Primary"
-           Bottom="true"
-           Fixed="true">
-</MudAppBar>
-
 @code {
-    // Tracks whether the UI is in dark mode
     bool _isDark = false;
-
-    // Toggles between light and dark themes
     void ToggleDark() => _isDark = !_isDark;
 }
