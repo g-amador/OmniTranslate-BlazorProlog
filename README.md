@@ -154,7 +154,7 @@ Below are simple examples showing **input** and **expected output** for each tra
 
 Hi, warrior! Buy a weapon.
 
-
+<br><br>
 
 🧌
 
