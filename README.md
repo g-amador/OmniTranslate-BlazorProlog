@@ -1,7 +1,6 @@
 # OmniTranslate – Blazor + Prolog Language Converter
 
-OmniTranslate is a modern rewrite of the original *ASCIIfromToConverter* project.  
-This version uses **Blazor**, **C#**, and **Prolog** to translate text between multiple fictional or game‑inspired languages such as **Tibia Orc**, **Minion**, and more.
+OmniTranslate is an app that uses **Blazor**, **C#**, and **Prolog** to translate text between multiple fictional or game‑inspired languages such as **Tibia Orc**, **Minion**, and more.
 
 The system supports:
 
@@ -63,41 +62,79 @@ This project is ideal for:
 
 ---
 
-## 📁 <a name="folder-structure"> Folder Structure
+## 📁 <a name="folder-structure">Folder Structure
 
-    OmniTranslate/
+OmniTranslate-BlazorProlog/                               # Main repository
+│
+├── LICENSE                                               # MIT license
+├── README.md                                             # Project documentation
+│
+└── src/                                                  # Application source code
     │
-    ├── Prolog/
-    │   ├── orc.pl
-    │   ├── minion.pl
-    │   └── (other dictionaries)
-    │
-    ├── Services/
-    │   ├── Interfaces/
-    │   │   └── ITranslator.cs
+    ├── wwwroot/                                          # Static web assets
     │   │
-    │   └── Implementations/
-    │       └── Translators/
-    │           ├── EnglishToOrcTranslator.cs
-    │           ├── OrcToEnglishTranslator.cs
-    │           ├── EnglishToMinionTranslator.cs
-    │           ├── MinionToEnglishTranslator.cs
-    │           ├── OrcToEnglishTranslator.cs
-    │           ├── EnglishToMinionTranslator.cs
-    │           └── MinionToEnglishTranslator.cs
+    │   ├── app.css                                       # Global stylesheet
+    │   │
+    │   └── js/                                           # JavaScript utilities
+    │       ├── clipboard.js                              # Clipboard helper for copy buttons
+    │       └── screen.js                                 # Auto-resize and UI utilities
     │
-    ├── wwwroot/
-    │   └── js/
-    │       └── screen.js
+    ├── Components/                                       # Blazor UI components
+    │   │
+    │   ├── _Imports.razor                                # Shared Razor imports
+    │   ├── App.razor                                     # Blazor application root
+    │   ├── Routes.razor                                  # Application routing
+    │   │
+    │   ├── Layout/                                       # Application layout components
+    │   │   ├── MainLayout.razor                          # Main layout wrapper
+    │   │   └── ReconnectModal.razor                      # Connection recovery UI
+    │   │
+    │   ├── Pages/                                        # Route-level pages
+    │   │   ├── Error.razor                               # Error page
+    │   │   ├── NotFound.razor                            # 404 page
+    │   │   └── TranslatorPage.razor                      # Main translation interface
+    │   │
+    │   └── Translator/                                   # Components used by TranslatorPage
+    │       ├── CopyButton.razor                          # Copy-to-clipboard button
+    │       ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
+    │       └── TranslationPanel.razor                    # Input/output text areas
     │
-    ├── Components/
-    │   ├── TranslationPanel.razor
-    │   └── CopyButton.razor
+    ├── Models/
+    │   └── TranslationMode.cs                            # Enum/model defining translation modes
     │
-    ├── Pages/
-    │   └── Index.razor
+    ├── Prolog/                                           # Prolog dictionaries (language rules)
+    │   ├── braille.pl                                    # Braille dictionary
+    │   ├── minion.pl                                     # Minion dictionary
+    │   ├── morse.pl                                      # Morse dictionary
+    │   └── orc.pl                                        # Orc dictionary
     │
-    └── README.md
+    ├── Services/                                         # Application services
+    │   │
+    │   ├── TranslationModeProvider.cs                    # Provides active translation mode
+    │   ├── TranslationRegistry.cs                        # Registers available translators
+    │   │
+    │   ├── Implementations/                              # Concrete service implementations
+    │   │   │
+    │   │   ├── Translators/                              # C# translators (English <-> X)
+    │   │   │   ├── BrailleToEnglishTranslator.cs         # Braille → English
+    │   │   │   ├── EnglishToBrailleTranslator.cs         # English → Braille
+    │   │   │   ├── EnglishToMinionTranslator.cs          # English → Minion
+    │   │   │   ├── EnglishToMorseTranslator.cs           # English → Morse
+    │   │   │   ├── EnglishToOrcTranslator.cs             # English → Orc
+    │   │   │   ├── MinionToEnglishTranslator.cs          # Minion → English
+    │   │   │   ├── MorseToEnglishTranslator.cs           # Morse → English
+    │   │   │   └── OrcToEnglishTranslator.cs             # Orc → English
+    │   │   │
+    │   │   └── PrologTranslationService.cs               # Executes Prolog queries
+    │   │
+    │   └── Interfaces/                                   # Interfaces and abstractions
+    │       │
+    │       ├── IPrologTranslationService.cs              # Interface for Prolog execution service
+    │       └── ITranslator.cs                            # Base interface for all translators
+    │
+    ├── appsettings.json                                  # Application configuration
+    └── Program.cs                                        # Application entry point
+
 
 [Back to Table of contents](#toc)
 
@@ -107,42 +144,52 @@ This project is ideal for:
 
 Below are simple examples showing **input** and **expected output** for each translator.
 
+[Back to Table of contents](#toc)
+
 ---
 
-### <a name="english--orc">English ↔ Orc
+### <a name="english--orc"> 🗣️ English ↔ 🧌 Orc
 
-**English:**
+🗣️
 Hi, warrior! Buy a weapon.
 
-**Orcs:**
+🧌
 charach, warrior! goshak a porack.
 
+[Back to Table of contents](#toc)
+
 ---
 
-### <a name="english--minion">English ↔ Minion
+### <a name="english--minion"> 🗣️ English ↔ 🍌 Minion
 
-**English:**
+🗣️ 
 Hello, friend!
 
-**Minion:**
+🍌
 bello, friend!
+
+[Back to Table of contents](#toc)
 
 ---
 
-### <a name="english--morse">English ↔ Morse 
+### <a name="english--morse"> 🗣️ English ↔ • — Morse 
 
-**English:**
+🗣️
 SOS
 
-**Morse:**
+• — 
 ... --- ...
 
-### <a name="english--braille">English ↔ Braille  
+[Back to Table of contents](#toc)
 
-**English:**
+---
+
+### <a name="english--braille"> 🗣️ English ↔ 📘 ⠿ Braille  
+
+🗣️
 cat
 
-**Braille:**
+📘 ⠿
 ⠓⠑⠇⠇⠕
 
 [Back to Table of contents](#toc)
@@ -169,6 +216,8 @@ A translator is responsible for:
 
 This modular design allows each language to define its own rules while keeping the translation pipeline unified.
 
+[Back to Table of contents](#toc)
+
 ---
 
 ## 2. 🖥️ Blazor UI
@@ -184,6 +233,8 @@ Key UI features include:
 - A dropdown menu for selecting the translation direction
 
 The UI simply forwards text to the selected translator and displays the result.
+
+[Back to Table of contents](#toc)
 
 ---
 
@@ -276,7 +327,7 @@ After this step, your new language becomes fully available in the application.
 
 To run OmniTranslate, you will need:
 
-- **.NET 8**  
+- **.NET 10**  
 - **Blazor WebAssembly or Blazor Server**  
 - **Prolog.NET engine** (for executing `.pl` dictionaries)  
 - A modern browser (Chrome, Edge, Firefox, Safari)
