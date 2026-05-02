@@ -346,6 +346,9 @@ To run OmniTranslate, you will need:
 - **.NET 10**  
 - **Blazor WebAssembly or Blazor Server**  
 - **Prolog.NET engine** (for executing `.pl` dictionaries)  
+ Prolog engine for .NET — OmniTranslate uses the
+[CSharpProlog](https://github.com/jsakamoto/CSharpProlog/tree/vnext/master) (vNext) engine by jsakamoto  
+to execute .pl dictionary files
 - A modern browser (Chrome, Edge, Firefox, Safari)
 
 Optional for development:
