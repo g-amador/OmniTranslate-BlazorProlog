@@ -380,3 +380,7 @@ If you have questions, suggestions, or want to share your work, feel free to rea
 Good luck, and have fun building with OmniTranslate!
 
 [Back to Table of contents](#toc)
+
+---
+
+> Built with ❤️, .NET, Prolog… and a sprinkle of Copilot magic.
