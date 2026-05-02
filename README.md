@@ -151,9 +151,11 @@ Below are simple examples showing **input** and **expected output** for each tra
 ### <a name="english--orc"> 🗣️ English ↔ 🧌 Orc
 
 🗣️
+
 Hi, warrior! Buy a weapon.
 
 🧌
+
 charach, warrior! goshak a porack.
 
 [Back to Table of contents](#toc)
@@ -163,9 +165,11 @@ charach, warrior! goshak a porack.
 ### <a name="english--minion"> 🗣️ English ↔ 🍌 Minion
 
 🗣️ 
+
 Hello, friend!
 
 🍌
+
 bello, friend!
 
 [Back to Table of contents](#toc)
@@ -175,9 +179,11 @@ bello, friend!
 ### <a name="english--morse"> 🗣️ English ↔ • — Morse 
 
 🗣️
+
 SOS
 
 • — 
+
 ... --- ...
 
 [Back to Table of contents](#toc)
@@ -187,9 +193,11 @@ SOS
 ### <a name="english--braille"> 🗣️ English ↔ 📘 ⠿ Braille  
 
 🗣️
+
 cat
 
 📘 ⠿
+
 ⠓⠑⠇⠇⠕
 
 [Back to Table of contents](#toc)
