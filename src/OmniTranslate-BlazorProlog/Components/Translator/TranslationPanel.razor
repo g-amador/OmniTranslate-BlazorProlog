@@ -1,0 +1,73 @@
+@inject IJSRuntime JS
+
+<!--
+    Main text input area for a translation panel.
+    - Lines is dynamically calculated based on screen height.
+    - FullWidth ensures it expands to the container width.
+-->
+<MudTextField T="string"
+              Label="@Label"
+              FullWidth="true"
+              Lines="@_lines"
+              Value="@Text"
+              ValueChanged="@(value => TextChanged.InvokeAsync(value))" />
+
+<!--
+    Copy-to-clipboard button.
+    Uses JS interop to copy the current text to the clipboard.
+-->
+<CopyButton TextToCopy="@Text" />
+
+@code {
+    /// <summary>
+    /// Label displayed above the text field (e.g., "English", "Morse").
+    /// </summary>
+    [Parameter]
+    public string Label { get; set; }
+
+    /// <summary>
+    /// The current text value inside the translation panel.
+    /// Controlled by the parent component.
+    /// </summary>
+    [Parameter]
+    public string Text { get; set; }
+
+    /// <summary>
+    /// Event callback triggered whenever the user edits the text.
+    /// Sends the updated value to the parent component.
+    /// </summary>
+    [Parameter]
+    public EventCallback<string> TextChanged { get; set; }
+
+    /// <summary>
+    /// Number of visible text lines in the MudTextField.
+    /// Automatically calculated based on the user's screen height.
+    /// </summary>
+    private int _lines = 10;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Read viewport height from JS (window.innerHeight)
+            var height = await JS.InvokeAsync<int>("ScreenTools.getHeight");
+
+            /*
+                Convert screen height → number of text lines
+
+                Based on real measurements:
+                    height = 698px → 14 lines
+                    height = 914px → 26 lines
+
+                Linear regression gives:
+                    lines = 0.0556 * height - 24.8
+
+                This produces consistent, predictable line counts
+                across different monitors and resolutions.
+            */
+            _lines = (int)(0.0556 * height - 24.8);
+
+            StateHasChanged();
+        }
+    }
+}

@@ -1,0 +1,38 @@
+@using OmniTranslate_BlazorProlog.Models
+@using OmniTranslate_BlazorProlog.Services
+
+<!--
+    Dropdown for selecting a translation mode.
+    This component is reusable and exposes a two‑way bound Value parameter.
+-->
+<MudSelect T="TranslationMode"
+           Label="Translation Mode"
+           @bind-Value="Value"
+           ValueExpression="() => Value"
+           ToStringFunc="m => m.Label">
+
+    @foreach (var m in ModeProvider.Modes)
+    {
+        <MudSelectItem Value="@m">@m.Label</MudSelectItem>
+    }
+</MudSelect>
+
+@code {
+    /// <summary>
+    /// Provides the list of available translation modes.
+    /// Injected so the component always reflects the current configuration.
+    /// </summary>
+    [Inject] public TranslationModeProvider ModeProvider { get; set; }
+
+    /// <summary>
+    /// The currently selected translation mode.
+    /// This value is two‑way bound to the parent component.
+    /// </summary>
+    [Parameter] public TranslationMode Value { get; set; }
+
+    /// <summary>
+    /// Event triggered when the selected translation mode changes.
+    /// Used by the parent component to react to user selection.
+    /// </summary>
+    [Parameter] public EventCallback<TranslationMode> ValueChanged { get; set; }
+}

@@ -1,0 +1,54 @@
+@inherits LayoutComponentBase
+
+<!-- Theme provider (light/dark mode) -->
+<MudThemeProvider @bind-IsDarkMode="_isDark" />
+
+<!-- MudBlazor service providers (dialogs, popovers, snackbars) -->
+<MudDialogProvider />
+<MudPopoverProvider />
+<MudSnackbarProvider />
+
+<!--
+    Root layout container.
+    We use a custom div instead of MudMainContent here because
+    we want FULL control over flex behavior.
+-->
+<div class="layout-root">
+
+    <!--
+        TOP APP BAR
+        - Fixed height (MudBlazor default ~64px)
+        - flex: 0 0 auto → height does NOT stretch
+    -->
+    <MudAppBar Color="Color.Primary" Class="top-bar">
+        <MudText Typo="Typo.h6">OmniTranslate</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
+    </MudAppBar>
+
+    <!--
+        BODY AREA
+        - flex: 1 1 auto → fills ALL remaining space
+        - overflow: auto → scrolls internally if needed
+        - This is the key to stable layout across zoom levels
+    -->
+    <MudPaper Class="layout-body">
+        @Body
+    </MudPaper>
+
+    <!--
+        BOTTOM APP BAR
+        - Smaller height (customizable)
+        - flex: 0 0 auto → height stays constant
+    -->
+    <MudAppBar Color="Color.Primary"
+               Bottom="true"
+               Class="bottom-bar">
+    </MudAppBar>
+
+</div>
+
+@code {
+    bool _isDark = false;
+    void ToggleDark() => _isDark = !_isDark;
+}

@@ -1,0 +1,148 @@
+@page "/"
+
+@using OmniTranslate_BlazorProlog.Components.Translator
+@using OmniTranslate_BlazorProlog.Models
+@using OmniTranslate_BlazorProlog.Services
+@using OmniTranslate_BlazorProlog.Services.Implementations
+
+@inject PrologTranslationService Prolog
+@inject TranslationModeProvider ModeProvider
+
+<!-- Main translation container -->
+<MudPaper Class="panel-container" Style="height: 100%; padding: 15px; margin: 16px; border-radius: 12px;" Elevation="4">
+
+    <!--
+        Translation Mode Dropdown
+        - Binds to _mode (the selected translation direction)
+        - ToStringFunc ensures the selected item displays correctly
+        - Modes are grouped by Label to avoid duplicates
+    -->
+    <MudSelect T="TranslationMode"
+                Label="Translation Mode"
+                Value="_mode"
+                ValueChanged="OnModeChanged"
+                ValueExpression="@(() => _mode)"
+                ToStringFunc="m => m.Label"
+                Class="mb-4">
+
+        @foreach (var m in ModeProvider.Modes
+            .GroupBy(x => x.Label)
+            .Select(g => g.First()))
+        {
+            <MudSelectItem Value="m">@m.Label</MudSelectItem>
+        }
+    </MudSelect>
+
+    <!--
+        Translation Panels
+        - Left panel: input in the "From" language
+        - Right panel: output in the "To" language
+        - Both update each other automatically
+    -->
+    <MudGrid Class="mt-4">
+        <MudItem xs="12" md="6">
+            <TranslationPanel Label="@_mode.From"
+                                Text="@_left"
+                                TextChanged="OnLeftChanged" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <TranslationPanel Label="@_mode.To"
+                                Text="@_right"
+                                TextChanged="OnRightChanged" />
+        </MudItem>
+    </MudGrid>
+
+    <!--
+        Swap Button
+        - Re-translates based on whichever side has content
+        - Useful when user pastes text on the wrong side
+    -->
+    <div class="mt-4 d-flex justify-center">
+        <MudIconButton Icon="@Icons.Material.Filled.SwapHoriz"
+                        Color="Color.Primary"
+                        Size="Size.Large"
+                        OnClick="Translate" />
+    </div>
+
+</MudPaper>
+
+@code {
+    // Currently selected translation mode (e.g., English → Morse)
+    TranslationMode _mode;
+
+    // Text in the left and right panels
+    string _left = "";
+    string _right = "";
+
+    // Initialize default translation mode
+    protected override void OnInitialized()
+    {
+        _mode = ModeProvider.Default;
+    }
+
+    private void OnModeChanged(TranslationMode newMode)
+    {
+        _mode = newMode;
+
+        // Clear both text areas
+        _left = "";
+        _right = "";
+    }
+
+    // Called whenever the left panel text changes
+    async Task OnLeftChanged(string value)
+    {
+        _left = value;
+
+        // Only translate when there is content
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            _right = await Prolog.Translate(_mode.Id, value);
+        }
+        // If empty, keep the right panel untouched
+    }
+
+    // Called whenever the right panel text changes
+    async Task OnRightChanged(string value)
+    {
+        _right = value;
+
+        // Only translate when there is content
+        if (!string.IsNullOrWhiteSpace(value))
+        {
+            var reverse = GetReverseMode(_mode);
+            _left = await Prolog.Translate(reverse.Id, value);
+        }
+        // If empty, keep the left panel untouched
+    }
+
+    // Manual translation trigger (swap button)
+    async Task Translate()
+    {
+        // Case 1: left filled, right empty → translate left → right
+        if (!string.IsNullOrWhiteSpace(_left) && string.IsNullOrWhiteSpace(_right))
+        {
+            _right = await Prolog.Translate(_mode.Id, _left);
+            return;
+        }
+
+        // Case 2: right filled, left empty → translate right → left
+        if (!string.IsNullOrWhiteSpace(_right) && string.IsNullOrWhiteSpace(_left))
+        {
+            var reverse = GetReverseMode(_mode);
+            _left = await Prolog.Translate(reverse.Id, _right);
+            return;
+        }
+
+        // Case 3: both filled → left is the source of truth
+        if (!string.IsNullOrWhiteSpace(_left) && !string.IsNullOrWhiteSpace(_right))
+        {
+            _right = await Prolog.Translate(_mode.Id, _left);
+        }
+    }
+
+    // Finds the reverse translation mode (e.g., Morse → English)
+    TranslationMode GetReverseMode(TranslationMode m)
+        => ModeProvider.Modes.First(x => x.From == m.To && x.To == m.From);
+}
