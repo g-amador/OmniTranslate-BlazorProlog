@@ -11,7 +11,7 @@ The system supports:
 - Bidirectional translation  
 - Modular translator architecture  
 - Prolog‑powered dictionaries
-- AI assistant help via Azure OpenAI
+- AI assistant via Azure OpenAI
 
 ![OmniTranslate Demo](./assets/demo_OmniTranslate.gif)
 
