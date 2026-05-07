@@ -22,11 +22,7 @@ The system supports:
 1. [Overview](#overview)  
 2. [Features](#features)  
 3. [Folder Structure](#folder-structure)  
-4. [Usage Examples](#usage-examples)  
-   - [English ↔ Orc](#english--orc)  
-   - [English ↔ Minion](#english--minion)  
-   - [English ↔ Morse](#english--morse)  
-   - [English ↔ Braille](#english--braille)  
+4. [Usage Examples](#usage-examples)
 5. [How It Works](#how-it-works)  
 6. [Adding New Languages](#adding-new-languages)
 7. [Setup AI Assistant help via Azure OpenAI](#setup-ai-assistant)
@@ -154,11 +150,7 @@ This project is ideal for:
 
 Below are simple examples showing **input** and **expected output** for each translator.
 
-[Back to Table of contents](#toc)
-
----
-
-### <a name="english--orc"> 🗣️ English ↔ 🧌 Orc
+###  🗣️ English ↔ 🧌 Orc
 
 🗣️
 
@@ -168,11 +160,7 @@ Hi, warrior! Buy a weapon.
 
 charach, warrior! goshak a porack.
 
-[Back to Table of contents](#toc)
-
----
-
-### <a name="english--minion"> 🗣️ English ↔ 🍌 Minion
+### 🗣️ English ↔ 🍌 Minion
 
 🗣️ 
 
@@ -181,10 +169,6 @@ Hello, friend!
 🍌
 
 bello, friend!
-
-[Back to Table of contents](#toc)
-
----
 
 ### <a name="english--morse"> 🗣️ English ↔ • — Morse 
 
@@ -195,10 +179,6 @@ SOS
 • — 
 
 ... --- ...
-
-[Back to Table of contents](#toc)
-
----
 
 ### <a name="english--braille"> 🗣️ English ↔ 📘 ⠿ Braille  
 
@@ -219,11 +199,7 @@ cat
 OmniTranslate combines **Blazor**, **C#**, and **Prolog** to perform structured, rule‑based text translation.  
 Each language pair is implemented as a translator that loads a Prolog dictionary and applies token‑level processing.
 
-[Back to Table of contents](#toc)
-
----
-
-### 1. 🧠 Translator Classes
+### 🧠 Translator Classes
 
 Each language pair in OmniTranslate is implemented as a dedicated translator class.  
 All translators implement the shared `ITranslator` interface, ensuring a consistent structure and making it easy to add new languages.
@@ -238,11 +214,7 @@ A translator is responsible for:
 
 This modular design allows each language to define its own rules while keeping the translation pipeline unified.
 
-[Back to Table of contents](#toc)
-
----
-
-### 2. 🖥️ Blazor UI
+### 🖥️ Blazor UI
 
 The Blazor interface provides a clean and responsive environment for interacting with the translators.
 
@@ -256,11 +228,7 @@ Key UI features include:
 
 The UI simply forwards text to the selected translator and displays the result.
 
-[Back to Table of contents](#toc)
-
----
-
-### 3. 📚 Prolog Dictionaries
+### 📚 Prolog Dictionaries
 
 Each supported language has a dedicated `.pl` file located in the `/Prolog/` directory.
 
@@ -288,11 +256,7 @@ Dictionaries may contain:
 OmniTranslate is designed to be easily extensible.  
 The following steps are required add a new language.
 
-[Back to Table of contents](#toc)
-
----
-
-### 1. 📄 Create a Prolog Dictionary  
+### 📄 Create a Prolog Dictionary  
 Add a new file under `/Prolog/`:
 ```
 mynewlang.pl
@@ -305,11 +269,7 @@ mynewlang_word("hello", "xyz").
 mynewlang_word("friend", "abc").
 ```
 
-[Back to Table of contents](#toc)
-
----
-
-### 2. 🧠 Create Two Translators  
+### 🧠 Create Two Translators  
 Add the following C# classes:
 
 - `EnglishToMyNewLangTranslator.cs`
@@ -334,11 +294,7 @@ This assistant can provide:
 
 To enable AI assistance, you must configure an Azure OpenAI resource.
 
-[Back to Table of contents](#toc)
-
----
-
-### 1. Create an Azure OpenAI Resource 
+### Create an Azure OpenAI Resource 
 
 Follow Microsoft’s official guide to create the resource and deploy a model: 
 [AI: Create an Azure OpenAI Resource and Deploy a Model](https://learn.microsoft.com/en-us/microsoft-cloud/dev/tutorials/openai-acs-msgraph/02-openai-create-resource)
@@ -355,7 +311,7 @@ You will need these values in the next step.
 
 ---
 
-### 2. Configure `appsettings.{environment}.json`
+### Configure `appsettings.{environment}.json`
 
 Once you have your Azure OpenAI resource, add the following section to your environment‑specific settings file:
 ```
