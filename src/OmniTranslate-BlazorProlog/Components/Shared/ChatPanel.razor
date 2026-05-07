@@ -1,0 +1,107 @@
+@inject IAIChatService AI
+
+<!--
+    Floating AI Assistant Button
+    - Opens/closes the chat drawer
+-->
+<MudIconButton Icon="@Icons.Material.Filled.SmartToy"
+               Color="Color.Error"
+               Size="Size.Large"
+               Style="
+position: fixed;
+bottom: 77px;
+right: 44px;
+z-index: 9999;
+"
+               OnClick="@ToggleDrawer" />
+
+@if (_open)
+{
+    <!--
+        Chat Drawer Container
+        - Fixed position
+        - Contains header, message list, and input area
+    -->
+    <MudPaper Elevation="8"
+              Style="
+        position: fixed;
+        bottom: 150px;
+        right: 44px;
+        width: 320px;
+        height: 380px;
+        border-radius: 12px;
+        z-index: 10000;
+        display: flex;
+        flex-direction: column;
+        padding: 12px;
+        ">
+
+        <!-- Drawer Title -->
+        <MudText Typo="Typo.h6">AI Assistant</MudText>
+
+        <!--
+            Message List
+            - Displays user and AI messages
+            - Scrollable
+        -->
+        <MudList T="object" Dense="true" Style="flex-grow:1; overflow-y:auto; margin-top:10px;">
+            @foreach (var msg in Messages)
+            {
+                <MudListItem T="object">
+                    <MudText Color="@msg.Color">@msg.Text</MudText>
+                </MudListItem>
+            }
+        </MudList>
+
+        <!--
+            Input Row
+            - Text field + send button
+        -->
+        <div style="display:flex; gap:6px;">
+            <MudTextField @bind-Value="UserInput"
+                          Placeholder="Ask something..."
+                          Style="flex-grow:1;" />
+
+            <MudIconButton Icon="@Icons.Material.Filled.Send"
+                           Color="Color.Primary"
+                           OnClick="@SendMessage" />
+        </div>
+
+    </MudPaper>
+}
+
+@code {
+    [Parameter] public bool IsDarkMode { get; set; }
+
+    // Controls whether the drawer is open
+    private bool _open = false;
+
+    // Holds the user's current input
+    private string UserInput = "";
+
+    // Stores chat messages (text + color)
+    private List<(string Text, Color Color)> Messages = new();
+
+    // Toggles the chat drawer visibility
+    private void ToggleDrawer() => _open = !_open;
+
+    // Sends the user's message to the AI service
+    private async Task SendMessage()
+    {
+        // Ignore empty messages
+        if (string.IsNullOrWhiteSpace(UserInput))
+            return;
+
+        // Add user's message to the list
+        Messages.Add((UserInput, Color.Primary));
+
+        // Ask the AI service for a reply
+        var reply = await AI.AskAsync(UserInput);
+
+        // Add AI response to the list
+        Messages.Add((reply, Color.Secondary));
+
+        // Clear input field
+        UserInput = "";
+    }
+}

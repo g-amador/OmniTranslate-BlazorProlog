@@ -1,11 +1,6 @@
 @page "/"
 
-@using OmniTranslate_BlazorProlog.Components.Translator
-@using OmniTranslate_BlazorProlog.Models
-@using OmniTranslate_BlazorProlog.Services
-@using OmniTranslate_BlazorProlog.Services.Implementations
-
-@inject PrologTranslationService Prolog
+@inject IPrologTranslationService Prolog
 @inject TranslationModeProvider ModeProvider
 
 <!-- Main translation container -->

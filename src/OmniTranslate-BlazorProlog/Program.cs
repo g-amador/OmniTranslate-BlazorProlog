@@ -2,6 +2,7 @@ using MudBlazor.Services;
 using OmniTranslate_BlazorProlog.Components;
 using OmniTranslate_BlazorProlog.Services;
 using OmniTranslate_BlazorProlog.Services.Implementations;
+using OmniTranslate_BlazorProlog.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +30,13 @@ builder.Services.AddMudServices();
 /// Registers translation-related services as singletons.
 /// These remain alive for the lifetime of the application.
 /// </summary>
-builder.Services.AddSingleton<PrologTranslationService>();
+builder.Services.AddSingleton<IPrologTranslationService, PrologTranslationService>();
 builder.Services.AddSingleton<TranslationModeProvider>();
+
+/// <summary>
+/// Registers the Azure OpenAI chat service and injects HttpClient for API calls.
+/// </summary>
+builder.Services.AddHttpClient<IAIChatService, AiChatService>();
 
 var app = builder.Build();
 

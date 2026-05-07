@@ -7,13 +7,14 @@
 <MudDialogProvider />
 <MudPopoverProvider />
 <MudSnackbarProvider />
+<ChatPanel IsDarkMode="_isDark" />
 
 <!--
     Root layout container.
     We use a custom div instead of MudMainContent here because
     we want FULL control over flex behavior.
 -->
-<div class="layout-root">
+<MudLayout Class="layout-root">
 
     <!--
         TOP APP BAR
@@ -46,7 +47,7 @@
                Class="bottom-bar">
     </MudAppBar>
 
-</div>
+</MudLayout>
 
 @code {
     bool _isDark = false;
