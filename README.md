@@ -294,7 +294,7 @@ This assistant can provide:
 
 To enable AI assistance, you must configure an Azure OpenAI resource.
 
-### Create an Azure OpenAI Resource 
+### 📘 Create an Azure OpenAI Resource
 
 Follow Microsoft’s official guide to create the resource and deploy a model: 
 [AI: Create an Azure OpenAI Resource and Deploy a Model](https://learn.microsoft.com/en-us/microsoft-cloud/dev/tutorials/openai-acs-msgraph/02-openai-create-resource)
@@ -307,7 +307,7 @@ During this process, you will obtain:
 
 You will need these values in the next step.
 
-### Configure `appsettings.{environment}.json`
+### 🛠️ Configure `appsettings.{environment}.json`
 
 Once you have your Azure OpenAI resource, add the following section to your environment‑specific settings file:
 ```
