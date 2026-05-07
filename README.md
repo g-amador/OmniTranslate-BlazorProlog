@@ -29,7 +29,7 @@ The system supports:
    - [English ↔ Braille](#english--braille)  
 5. [How It Works](#how-it-works)  
 6. [Adding New Languages](#adding-new-languages)
-7. [Setup AI Assistant help via Azure OpenAI](#setup_AI_assistant)
+7. [Setup AI Assistant help via Azure OpenAI](#setup-ai-assistant)
 8. [Requirements](#requirements)  
 9. [Contact](#contact)
 
@@ -283,7 +283,7 @@ Dictionaries may contain:
 
 ---
 
-## 6. ➕ <a name="adding-new-languages">Adding New Languages
+## ➕ <a name="adding-new-languages">Adding New Languages
 
 OmniTranslate is designed to be easily extensible.  
 The following steps are required add a new language.
@@ -323,7 +323,7 @@ After this step, your new language becomes fully available in the application.
 
 ---
 
-## 7. 🤖 <a name="setup_AI_assistant">Setup AI Assistant help via Azure OpenAI
+## 🤖 <a name="setup-ai-assistant">Setup AI Assistant help via Azure OpenAI
 
 OmniTranslate supports an optional AI Assistant powered by Azure OpenAI.
 This assistant can provide:
@@ -379,7 +379,7 @@ After this step, your AI Assistant is now available in the application.
 
 ---
 
-## 8. 🧩 <a name="requirements">Requirements
+## 🧩 <a name="requirements">Requirements
 
 To run OmniTranslate, you will need:
 
@@ -403,7 +403,7 @@ Optional for development:
 
 ---
 
-## 9. 📄 <a name="contact">Contact & Usage Notice
+## 📄 <a name="contact">Contact & Usage Notice
 
 OmniTranslate is released under the MIT License, which allows you to freely use, modify, distribute, and build upon the project — including creating your own translators, dictionaries, demos, extensions, or integrating it into other applications.
 
