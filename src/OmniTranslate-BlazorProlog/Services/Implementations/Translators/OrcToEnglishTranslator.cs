@@ -28,6 +28,11 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         public string To => "English";
 
         /// <summary>
+        /// Human‑readable label used in the UI.
+        /// </summary>
+        public string Label => "English <-> Orc";
+
+        /// <summary>
         /// Initializes the Prolog engine and loads the Orc dictionary.
         /// </summary>
         public OrcToEnglishTranslator()
@@ -42,17 +47,20 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         /// </summary>
         public string Translate(string input)
         {
+            // Break the input into tokens (words, punctuation, line breaks).
             var tokens = Tokenize(input.ToLower());
             var sb = new StringBuilder();
 
             int i = 0;
+
             while (i < tokens.Count)
             {
-                // Punctuation → append directly
+                // If the token is punctuation, append it directly.
                 if (IsPunctuation(tokens[i]))
                 {
                     sb.Append(tokens[i]);
 
+                    // Add a space after punctuation only if the next token is a word.
                     if (i + 1 < tokens.Count && char.IsLetter(tokens[i + 1][0]))
                         sb.Append(' ');
 
@@ -60,7 +68,8 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                     continue;
                 }
 
-                // Orc has only 1-word entries, but we keep the structure for consistency
+                // Orc has only 1‑word entries, but we keep the structure consistent
+                // with MinionToEnglish for future extensibility.
                 string translated = QueryOrc(tokens[i]) ?? tokens[i];
 
                 sb.Append(translated);
@@ -71,26 +80,25 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             return sb.ToString().Trim();
         }
 
-        /// <summary>
-        /// Queries Prolog for the English translation of an Orc word.
-        /// </summary>
         private string QueryOrc(string orc)
         {
+            // Build a Prolog query to translate the Orc word.
             var query = $"orc_word(E, \"{orc}\").";
+
+            // Execute the query and retrieve the first matching solution.
             var sol = _engine.GetFirstSolution(query);
 
             if (!sol.Solved)
                 return null;
 
+            // sol.ToString() returns something like: orc_word("hi","charach").
             var fact = sol.ToString();
             var parts = fact.Split('"');
 
+            // Extract the English translation from the Prolog fact.
             return parts.Length >= 2 ? parts[1] : null;
         }
 
-        /// <summary>
-        /// Splits text into tokens: words and punctuation as separate items.
-        /// </summary>
         private static List<string> Tokenize(string input)
         {
             var tokens = new List<string>();
@@ -102,57 +110,55 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                 if (char.IsLetterOrDigit(c))
                 {
+                    // Build up a word token.
                     current.Append(c);
                 }
                 else
                 {
+                    // Emit the current word before handling punctuation or line breaks.
                     if (current.Length > 0)
                     {
                         tokens.Add(current.ToString());
                         current.Clear();
                     }
 
-                    // Preserve CRLF (\r\n)
+                    // Preserve CRLF sequences as their own tokens.
                     if (c == '\r' && i + 1 < input.Length && input[i + 1] == '\n')
                     {
                         tokens.Add("\r\n");
-                        i++; // skip \n
+                        i++; // Skip the '\n'
                         continue;
                     }
 
-                    // Preserve LF (\n)
+                    // Preserve LF as its own token.
                     if (c == '\n')
                     {
                         tokens.Add("\n");
                         continue;
                     }
 
-                    // Preserve punctuation
+                    // Add punctuation as its own token (ignore whitespace).
                     if (!char.IsWhiteSpace(c))
                         tokens.Add(c.ToString());
                 }
             }
 
+            // Emit any leftover word.
             if (current.Length > 0)
                 tokens.Add(current.ToString());
 
             return tokens;
         }
 
-        /// <summary>
-        /// Determines whether a token is punctuation.
-        /// </summary>
         private static bool IsPunctuation(string token)
         {
+            // A punctuation token is a single non-letter character.
             return token.Length == 1 && char.IsPunctuation(token[0]);
         }
 
-        /// <summary>
-        /// Adds a space after a translated word if the next token is another word.
-        /// Prevents spaces before punctuation.
-        /// </summary>
         private static void AddSpaceIfNeeded(List<string> tokens, StringBuilder sb, int nextIndex)
         {
+            // Add a space only if the next token is a word (not punctuation).
             if (nextIndex < tokens.Count && !IsPunctuation(tokens[nextIndex]))
                 sb.Append(' ');
         }

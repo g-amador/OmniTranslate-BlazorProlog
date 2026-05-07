@@ -4,41 +4,44 @@ namespace OmniTranslate_BlazorProlog.Services
 {
     /// <summary>
     /// Provides all available translation modes for the UI dropdown.
-    /// Each mode defines a direction (English → Braille, Braille → English, etc.)
-    /// and is used by the UI to determine which translator to invoke.
+    /// Each mode represents a translation direction (e.g., English → Orc).
+    /// The UI uses these modes to determine which translator to invoke.
     /// </summary>
     public class TranslationModeProvider
     {
         /// <summary>
         /// List of all supported translation modes.
-        /// Each mode includes:
-        /// - Id: unique identifier used to select the translator
+        /// Each mode contains:
+        /// - Id: unique translator identifier
         /// - Label: text shown in the dropdown
         /// - From: source language
         /// - To: target language
         /// </summary>
-        public List<TranslationMode> Modes { get; } = new()
-        {
-            // Braille
-            new TranslationMode { Id="english_to_braille", Label="English <-> Braille", From="english", To="braille" },
-            new TranslationMode { Id="braille_to_english", Label="English <-> Braille", From="braille", To="english" },
-
-            // Minion
-            new TranslationMode { Id="english_to_minion", Label="English <-> Minion", From="english", To="minion" },
-            new TranslationMode { Id="minion_to_english", Label="English <-> Minion", From="minion", To="english" },
-
-            // Morse
-            new TranslationMode { Id="english_to_morse", Label="English <-> Morse", From="english", To="morse" },
-            new TranslationMode { Id="morse_to_english", Label="English <-> Morse", From="morse", To="english" },
-
-            // Orc
-            new TranslationMode { Id="english_to_orc", Label="English <-> Orc", From="english", To="orc" },
-            new TranslationMode { Id="orc_to_english", Label="English <-> Orc", From="orc", To="english" },
-        };
+        public List<TranslationMode> Modes { get; }
 
         /// <summary>
-        /// The default translation mode used when the application loads.
+        /// The default translation mode used when the app loads.
         /// </summary>
         public TranslationMode Default => Modes.First(m => m.Id == "english_to_morse");
+
+        /// <summary>
+        /// Builds the list of translation modes by reading all registered translators
+        /// from the <see cref="TranslationRegistry"/>.
+        /// </summary>
+        /// <param name="registry">Registry containing all translator instances.</param>
+        public TranslationModeProvider(TranslationRegistry registry)
+        {
+            // Convert each translator into a TranslationMode object.
+            // This keeps UI concerns separate from translator implementation details.
+            Modes = registry.Translators.Values
+                .Select(t => new TranslationMode
+                {
+                    Id = t.Id,       // Unique translator ID (e.g., "english_to_orc")
+                    Label = t.Label, // Display label (e.g., "English → Orc")
+                    From = t.From,   // Source language
+                    To = t.To        // Target language
+                })
+                .ToList();
+        }
     }
 }
