@@ -14,11 +14,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
     {
         private readonly PrologEngine _engine;
 
-        /// <summary>
-        /// Maps Unicode Braille characters to their 6‑dot binary patterns.
-        /// This allows us to keep braille.pl unchanged (binary-based)
-        /// while accepting Unicode Braille as input.
-        /// </summary>
+        // Maps Unicode Braille characters to their 6‑dot binary patterns.
         private static readonly Dictionary<string, string> UnicodeToBinary = new()
         {
             ["⠁"] = "100000",
@@ -47,34 +43,51 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             ["⠭"] = "101101",
             ["⠽"] = "101111",
             ["⠵"] = "101011",
-
-            // Number sign (⠼) = binary 001111
-            ["⠼"] = "001111"
+            ["⠼"] = "001111"// Number sign (⠼) = binary 001111
         };
 
+        /// <summary>
+        /// Unique identifier for this translator.
+        /// </summary>
         public string Id => "braille_to_english";
+
+        /// <summary>
+        /// Source language.
+        /// </summary>
         public string From => "Braille";
+
+        /// <summary>
+        /// Target language.
+        /// </summary>
         public string To => "English";
 
+        /// <summary>
+        /// Label used in the UI dropdown.
+        /// </summary>
+        public string Label => "English <-> Braille";
+
+        /// <summary>
+        /// Initializes the Prolog engine and loads the Braille dictionary.
+        /// </summary>
         public BrailleToEnglishTranslator()
         {
-            // Load Prolog dictionary (binary-based)
             _engine = new PrologEngine(false);
             _engine.ConsultFromString(File.ReadAllText("Prolog/braille.pl"));
         }
 
+        /// <summary>
+        /// Translates Unicode Braille into English text.
+        /// </summary>
         public string Translate(string input)
         {
             return TranslateBrailleToEnglish(input);
         }
 
-        /// <summary>
-        /// Converts Unicode Braille into English text.
-        /// - Unicode symbols → binary
-        /// - binary → English via Prolog
-        /// - Handles number mode (⠼)
-        /// - Words separated by 3 spaces
-        /// </summary>
+        // Converts Unicode Braille into English text.
+        // - Unicode symbols → binary
+        // - binary → English via Prolog
+        // - Handles number mode (⠼)
+        // - Words separated by 3 spaces
         private string TranslateBrailleToEnglish(string input)
         {
             var sb = new StringBuilder();
@@ -90,22 +103,21 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                 foreach (var symbol in symbols)
                 {
-                    // NUMBER SIGN (⠼) — activates number mode
+                    // Number sign activates number mode
                     if (symbol == "⠼")
                     {
                         inNumberMode = true;
                         continue;
                     }
 
-                    // Convert Unicode → binary pattern
+                    // Convert Unicode → binary
                     if (!UnicodeToBinary.TryGetValue(symbol, out var binary))
                     {
-                        // Unknown symbol — output as-is
-                        sb.Append(symbol);
+                        sb.Append(symbol); // unknown symbol
                         continue;
                     }
 
-                    // Query Prolog to get the English character for this binary pattern
+                    // Query Prolog for English character
                     string raw = QueryBraille(binary);
 
                     if (raw == null)
@@ -114,13 +126,13 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                         continue;
                     }
 
-                    // If raw is NOT a–j, number mode ends BEFORE conversion
+                    // If raw is NOT a–j, number mode ends
                     if (inNumberMode && !"abcdefghij".Contains(raw))
                         inNumberMode = false;
 
                     string translated = raw;
 
-                    // Convert a–j → 1–0 ONLY when number mode is active
+                    // Convert a–j → 1–0 when number mode is active
                     if (inNumberMode)
                     {
                         translated = raw switch
@@ -142,21 +154,18 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                     sb.Append(translated);
                 }
 
-                // Add a space between words
+                // Add space between words
                 if (w < words.Length - 1)
                 {
                     sb.Append(' ');
-                    inNumberMode = false; // number mode always ends at word boundary
+                    inNumberMode = false; // number mode ends at word boundary
                 }
             }
 
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Queries Prolog for the English character corresponding to a binary Braille pattern.
-        /// Example fact: braille("a", "100000").
-        /// </summary>
+        // Queries Prolog for the English character corresponding to a binary Braille pattern.
         private string QueryBraille(string binaryPattern)
         {
             var query = $"braille(X, \"{binaryPattern}\").";
@@ -165,11 +174,10 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             if (!sol.Solved)
                 return null;
 
-            // sol.ToString() returns: braille("a","100000").
+            // sol.ToString() looks like: braille("a","100000").
             var fact = sol.ToString();
             var parts = fact.Split('"');
 
-            // parts[1] = English letter/digit
             return parts.Length >= 2 ? parts[1] : null;
         }
     }

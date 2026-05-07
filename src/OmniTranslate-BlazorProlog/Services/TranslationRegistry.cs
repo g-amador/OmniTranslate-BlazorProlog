@@ -1,4 +1,3 @@
-using OmniTranslate_BlazorProlog.Services.Implementations.Translators;
 using OmniTranslate_BlazorProlog.Services.Interfaces;
 
 namespace OmniTranslate_BlazorProlog.Services
@@ -16,36 +15,28 @@ namespace OmniTranslate_BlazorProlog.Services
         public Dictionary<string, ITranslator> Translators { get; } = new();
 
         /// <summary>
-        /// Registers a translator instance using its <see cref="ITranslator.Id"/> as the key.
-        /// If a translator with the same ID already exists, it will be replaced.
-        /// </summary>
-        /// <param name="translator">The translator instance to register.</param>
-        public void Register(ITranslator translator)
-        {
-            Translators[translator.Id] = translator;
-        }
-
-        /// <summary>
-        /// Initializes the registry and registers all built‑in translators.
-        /// Add new translators here to make them available to the application.
+        /// Scans the assembly for all classes implementing <see cref="ITranslator"/>,
+        /// creates an instance of each one, and registers them by their unique ID.
         /// </summary>
         public TranslationRegistry()
         {
-            // Braille translators
-            Register(new EnglishToBrailleTranslator());
-            Register(new BrailleToEnglishTranslator());
+            // Find all types in the assembly that implement ITranslator.
+            // We exclude interfaces and abstract classes because they cannot be instantiated.
+            var translators = typeof(ITranslator).Assembly
+                .GetTypes()
+                .Where(t => typeof(ITranslator).IsAssignableFrom(t) &&
+                            !t.IsInterface &&
+                            !t.IsAbstract);
 
-            // Minion translators
-            Register(new EnglishToMinionTranslator());
-            Register(new MinionToEnglishTranslator());
+            // Create an instance of each translator and register it by its ID.
+            foreach (var type in translators)
+            {
+                // Activator.CreateInstance creates the translator using its parameterless constructor.
+                var instance = (ITranslator)Activator.CreateInstance(type)!;
 
-            // Morse translators
-            Register(new EnglishToMorseTranslator());
-            Register(new MorseToEnglishTranslator());
-
-            // Orc translators
-            Register(new EnglishToOrcTranslator());
-            Register(new OrcToEnglishTranslator());
+                // Store the translator in the dictionary using its unique ID.
+                Translators[instance.Id] = instance;
+            }
         }
     }
 }

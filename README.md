@@ -1,6 +1,7 @@
-# OmniTranslate – Blazor + Prolog Language Converter
+# OmniTranslate – Blazor + Prolog Language Converter With AI Assistant
 
-OmniTranslate is an app that uses **Blazor**, **C#**, and **Prolog** to translate text between multiple fictional or game‑inspired languages such as **Tibia Orc**, **Minion**, and more.
+OmniTranslate is a **Blazor** application using **MudBlazor** for the UI, **Prolog** for rule‑based translation, and optional **Azure OpenAI agent assistance**. 
+It supports both fictional and symbolic languages, specifically, **Tibia Orc**, **Minion**, **Morse**, and **Braille**.
 
 The system supports:
 
@@ -9,7 +10,8 @@ The system supports:
 - Line‑break preservation  
 - Bidirectional translation  
 - Modular translator architecture  
-- Prolog‑powered dictionaries  
+- Prolog‑powered dictionaries
+- AI assistant help via Azure OpenAI
 
 ![OmniTranslate Demo](./assets/demo_OmniTranslate.gif)
 
@@ -20,15 +22,12 @@ The system supports:
 1. [Overview](#overview)  
 2. [Features](#features)  
 3. [Folder Structure](#folder-structure)  
-4. [Usage Examples](#usage-examples)  
-   - [English ↔ Orc](#english--orc)  
-   - [English ↔ Minion](#english--minion)  
-   - [English ↔ Morse](#english--morse)  
-   - [English ↔ Braille](#english--braille)  
+4. [Usage Examples](#usage-examples)
 5. [How It Works](#how-it-works)  
-6. [Adding New Languages](#adding-new-languages)  
-7. [Requirements](#requirements)  
-8. [Contact](#contact)
+6. [Adding New Languages](#adding-new-languages)
+7. [Setup AI Assistant help via Azure OpenAI](#setup-ai-assistant)
+8. [Requirements](#requirements)  
+9. [Contact](#contact)
 
 ---
 
@@ -96,15 +95,17 @@ This project is ideal for:
         │   │   ├── NotFound.razor                            # 404 page
         │   │   └── TranslatorPage.razor                      # Main translation interface
         │   │
-        │   └── Translator/                                   # Components used by TranslatorPage
-        │       ├── CopyButton.razor                          # Copy-to-clipboard button
-        │       ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
-        │       └── TranslationPanel.razor                    # Input/output text areas
+        │   ├── Translator/                                   # Components used by TranslatorPage
+        │   │   ├── CopyButton.razor                          # Copy-to-clipboard button
+        │   │   ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
+        │   │   └── TranslationPanel.razor                    # Input/output text areas
+        │   └── Shared/                                       # Shared components
+        │       └── ChatPanel.razor                           # AI chat assistant panel    
         │
         ├── Models/
         │   └── TranslationMode.cs                            # Enum/model defining translation modes
         │
-        ├── Prolog/                                           # Prolog dictionaries (language rules)
+        ├── Prolog/                                           # Prolog dictionaries
         │   ├── braille.pl                                    # Braille dictionary
         │   ├── minion.pl                                     # Minion dictionary
         │   ├── morse.pl                                      # Morse dictionary
@@ -127,14 +128,17 @@ This project is ideal for:
         │   │   │   ├── MorseToEnglishTranslator.cs           # Morse → English
         │   │   │   └── OrcToEnglishTranslator.cs             # Orc → English
         │   │   │
+        │   │   ├── AIChatService.cs                          # AI chat service
         │   │   └── PrologTranslationService.cs               # Executes Prolog queries
         │   │
         │   └── Interfaces/                                   # Interfaces and abstractions
         │       │
+        │       ├── IAIChatService.cs                         # AI chat interface        
         │       ├── IPrologTranslationService.cs              # Interface for Prolog execution service
         │       └── ITranslator.cs                            # Base interface for all translators
         │
         ├── appsettings.json                                  # Application configuration
+        ├── appsettings.Development.json                      # Development environment config
         └── Program.cs                                        # Application entry point
 
 
@@ -146,41 +150,25 @@ This project is ideal for:
 
 Below are simple examples showing **input** and **expected output** for each translator.
 
-[Back to Table of contents](#toc)
-
----
-
-### <a name="english--orc"> 🗣️ English ↔ 🧌 Orc
+###  🗣️ English ↔ 🧌 Orc
 
 🗣️
 
 Hi, warrior! Buy a weapon.
 
-<br>
-
 🧌
 
 charach, warrior! goshak a porack.
 
-[Back to Table of contents](#toc)
-
----
-
-### <a name="english--minion"> 🗣️ English ↔ 🍌 Minion
+### 🗣️ English ↔ 🍌 Minion
 
 🗣️ 
 
 Hello, friend!
 
-<br>
-
 🍌
 
 bello, friend!
-
-[Back to Table of contents](#toc)
-
----
 
 ### <a name="english--morse"> 🗣️ English ↔ • — Morse 
 
@@ -188,23 +176,15 @@ bello, friend!
 
 SOS
 
-<br>
-
 • — 
 
 ... --- ...
-
-[Back to Table of contents](#toc)
-
----
 
 ### <a name="english--braille"> 🗣️ English ↔ 📘 ⠿ Braille  
 
 🗣️
 
 cat
-
-<br>
 
 📘 ⠿
 
@@ -219,7 +199,7 @@ cat
 OmniTranslate combines **Blazor**, **C#**, and **Prolog** to perform structured, rule‑based text translation.  
 Each language pair is implemented as a translator that loads a Prolog dictionary and applies token‑level processing.
 
-## 1. 🧠 Translator Classes
+### 🧠 Translator Classes
 
 Each language pair in OmniTranslate is implemented as a dedicated translator class.  
 All translators implement the shared `ITranslator` interface, ensuring a consistent structure and making it easy to add new languages.
@@ -234,11 +214,7 @@ A translator is responsible for:
 
 This modular design allows each language to define its own rules while keeping the translation pipeline unified.
 
-[Back to Table of contents](#toc)
-
----
-
-## 2. 🖥️ Blazor UI
+### 🖥️ Blazor UI
 
 The Blazor interface provides a clean and responsive environment for interacting with the translators.
 
@@ -252,11 +228,7 @@ Key UI features include:
 
 The UI simply forwards text to the selected translator and displays the result.
 
-[Back to Table of contents](#toc)
-
----
-
-## 3. 📚 Prolog Dictionaries
+### 📚 Prolog Dictionaries
 
 Each supported language has a dedicated `.pl` file located in the `/Prolog/` directory.
 
@@ -279,12 +251,12 @@ Dictionaries may contain:
 
 ---
 
-## 6. ➕ <a name="adding-new-languages">Adding New Languages
+## ➕ <a name="adding-new-languages">Adding New Languages
 
 OmniTranslate is designed to be easily extensible.  
-To add a new language:
+The following steps are required add a new language.
 
-### 1. 📄 Create a Prolog Dictionary  
+### 📄 Create a Prolog Dictionary  
 Add a new file under `/Prolog/`:
 ```
 mynewlang.pl
@@ -297,11 +269,7 @@ mynewlang_word("hello", "xyz").
 mynewlang_word("friend", "abc").
 ```
 
-[Back to Table of contents](#toc)
-
----
-
-### 2. 🧠 Create Two Translators  
+### 🧠 Create Two Translators  
 Add the following C# classes:
 
 - `EnglishToMyNewLangTranslator.cs`
@@ -309,39 +277,61 @@ Add the following C# classes:
 
 Both must implement the shared `ITranslator` interface and load your new `.pl` dictionary.  
 This ensures the new language integrates seamlessly with the existing translation pipeline.
-
----
-
-### 3. 🔌 Register the Translators  
-Add your new translators to the dependency injection container or translator service so they become available to the UI.
-
-Example (simplified):
-
-```csharp
-services.AddSingleton<ITranslator, EnglishToMyNewLangTranslator>();
-services.AddSingleton<ITranslator, MyNewLangToEnglishTranslator>();
-```
-
----
-
-### 4. 🎛️ Add to the UI  
-Update the language selection dropdown to include your new translation pair.  
-Once added, the UI will automatically route text to your new translators without requiring further changes.
-
-Example (simplified):
-
-```razor
-<option value="EnglishToMyNewLang">English → MyNewLang</option>
-<option value="MyNewLangToEnglish">MyNewLang → English</option>
-```
-
 After this step, your new language becomes fully available in the application.
 
 [Back to Table of contents](#toc)
 
 ---
 
-## 7. 🧩 <a name="requirements">Requirements
+## 🤖 <a name="setup-ai-assistant">Setup AI Assistant help via Azure OpenAI
+
+OmniTranslate supports an optional AI Assistant powered by Azure OpenAI.
+This assistant can provide:
+- Clarifications
+- Suggestions
+- Fallback translations
+- Natural‑language explanations
+
+To enable AI assistance, you must configure an Azure OpenAI resource.
+
+### 📘 Create an Azure OpenAI Resource
+
+Follow Microsoft’s official guide to create the resource and deploy a model: 
+[AI: Create an Azure OpenAI Resource and Deploy a Model](https://learn.microsoft.com/en-us/microsoft-cloud/dev/tutorials/openai-acs-msgraph/02-openai-create-resource)
+
+During this process, you will obtain:
+- Your Azure OpenAI endpoint URL
+- Your API key
+- Your model deployment name
+- The API version to use
+
+You will need these values in the next step.
+
+### 🛠️ Configure `appsettings.{environment}.json`
+
+Once you have your Azure OpenAI resource, add the following section to your environment‑specific settings file:
+```
+"AzureOpenAI": {
+  "Endpoint": "https://YOUR-RESOURCE-NAME.openai.azure.com/",
+  "ApiKey": "YOUR-AZURE-OPENAI-KEY",
+  "Deployment": "YOUR-MODEL-DEPLOYMENT-NAME",
+  "ApiVersion": "2024-02-15-preview"
+}
+```
+
+Field explanations
+- Endpoint: The base URL of your Azure OpenAI resource.
+- ApiKey: The access key generated by Azure.
+- Deployment: The name of the model deployment you created (e.g., gpt-4o-mini, gpt-4o, etc.).
+- ApiVersion: The API version required for your deployment.
+
+After this step, your AI Assistant is now available in the application.
+
+[Back to Table of contents](#toc)
+
+---
+
+## 🧩 <a name="requirements">Requirements
 
 To run OmniTranslate, you will need:
 
@@ -352,6 +342,8 @@ To run OmniTranslate, you will need:
 [CSharpProlog](https://github.com/jsakamoto/CSharpProlog/tree/vnext/master) (vNext) engine by jsakamoto  
 to execute .pl dictionary files
 - A modern browser (Chrome, Edge, Firefox, Safari)
+- The Azure OpenAI endpoint URL and API key, which you obtain after creating an Azure OpenAI resource and deploying a model.
+Follow Microsoft’s guide here: [AI: Create an Azure OpenAI Resource and Deploy a Model](https://learn.microsoft.com/en-us/microsoft-cloud/dev/tutorials/openai-acs-msgraph/02-openai-create-resource)
 
 Optional for development:
 

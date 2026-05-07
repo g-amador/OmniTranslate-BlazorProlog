@@ -1,11 +1,6 @@
 @page "/"
 
-@using OmniTranslate_BlazorProlog.Components.Translator
-@using OmniTranslate_BlazorProlog.Models
-@using OmniTranslate_BlazorProlog.Services
-@using OmniTranslate_BlazorProlog.Services.Implementations
-
-@inject PrologTranslationService Prolog
+@inject IPrologTranslationService Prolog
 @inject TranslationModeProvider ModeProvider
 
 <!-- Main translation container -->
@@ -26,10 +21,13 @@
                 Class="mb-4">
 
         @foreach (var m in ModeProvider.Modes
-            .GroupBy(x => x.Label)
-            .Select(g => g.First()))
+        .GroupBy(x => x.Label)
+        .Select(g => g
+            .OrderBy(x => x.From == "English" ? 0 : 1)
+            .ThenBy(x => x.From) // fallback ordering
+            .First()))
         {
-            <MudSelectItem Value="m">@m.Label</MudSelectItem>
+            <MudSelectItem Value="@m">@m.Label</MudSelectItem>
         }
     </MudSelect>
 

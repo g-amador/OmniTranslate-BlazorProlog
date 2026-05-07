@@ -22,6 +22,11 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         public string To => "Minion";
 
         /// <summary>
+        /// Human‑readable label used in the UI.
+        /// </summary>
+        public string Label => "English <-> Minion";
+
+        /// <summary>
         /// Initializes the translator and loads the Minion dictionary
         /// from the Prolog file <c>minion.pl</c>.
         /// </summary>
@@ -34,75 +39,68 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         /// <summary>
         /// Translates English text into Minion.
         /// </summary>
-        /// <param name="input">The English text to translate.</param>
-        /// <returns>The translated Minion text.</returns>
         public string Translate(string input)
         {
             return TranslateEnglishToMinion(input);
         }
 
-        /// <summary>
-        /// Removes punctuation from a word, leaving only letters.
-        /// </summary>
         private static string Clean(string word)
         {
+            // Remove any non-letter characters from the word.
+            // This is used to isolate the actual word before translation.
             return new string(word.Where(char.IsLetter).ToArray());
         }
 
-        /// <summary>
-        /// Performs the actual English → Minion translation.
-        /// Splits words and punctuation, queries Prolog for translations,
-        /// and preserves original punctuation and spacing.
-        /// </summary>
         private string TranslateEnglishToMinion(string input)
         {
             var sb = new StringBuilder();
 
-            // Split by spaces first (word-level)
+            // First split the input into words based on spaces.
+            // Each word may still contain punctuation.
             var words = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var raw in words)
             {
-                // Further split each word into [word][punctuation] tokens
+                // Split each word into smaller tokens:
+                // - alphabetic sequences (words)
+                // - punctuation marks (.,!? etc.)
                 foreach (var token in SplitWordAndPunctuation(raw))
                 {
                     if (char.IsLetter(token[0]))
                     {
-                        // Query Prolog for translation
+                        // Build a Prolog query to translate the English word.
                         var query = $"minion_word(\"{token.ToLower()}\", M).";
                         var sol = _engine.GetFirstSolution(query);
 
                         if (sol.Solved)
                         {
                             // sol.ToString() returns something like: minion_word("hello","bello").
+                            // Extract the Minion translation from the Prolog fact.
                             var fact = sol.ToString();
-                            var result = fact.Split('"')[1]; // Extract Minion word
+                            var result = fact.Split('"')[1];
                             sb.Append(result);
                         }
                         else
                         {
-                            // No translation found → keep original word
+                            // If no translation exists, keep the original word.
                             sb.Append(token);
                         }
                     }
                     else
                     {
-                        // Token is punctuation → append as-is
+                        // If the token is punctuation, append it unchanged.
                         sb.Append(token);
                     }
                 }
 
-                // Add space after each processed word group
+                // Add a space after each processed word group.
                 sb.Append(' ');
             }
 
+            // Trim trailing space for clean output.
             return sb.ToString().Trim();
         }
 
-        /// <summary>
-        /// Splits a token into separate word and punctuation parts.
-        /// Example: "hello," → ["hello", ","]
-        /// </summary>
         private static IEnumerable<string> SplitWordAndPunctuation(string token)
         {
             var current = new StringBuilder();
@@ -111,23 +109,24 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             {
                 if (char.IsLetter(c))
                 {
+                    // Build up alphabetic sequences into a word token.
                     current.Append(c);
                 }
                 else
                 {
-                    // Emit accumulated word before punctuation
+                    // When punctuation is encountered, emit the current word (if any).
                     if (current.Length > 0)
                     {
                         yield return current.ToString();
                         current.Clear();
                     }
 
-                    // Emit punctuation as its own token
+                    // Emit punctuation as its own token.
                     yield return c.ToString();
                 }
             }
 
-            // Emit final word if any
+            // Emit any remaining word characters.
             if (current.Length > 0)
                 yield return current.ToString();
         }
