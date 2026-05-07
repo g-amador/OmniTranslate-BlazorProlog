@@ -1,6 +1,7 @@
-# OmniTranslate – Blazor + Prolog Language Converter
+# OmniTranslate – Blazor + Prolog Language Converter With AI Assistant
 
-OmniTranslate is an app that uses **Blazor**, **C#**, and **Prolog** to translate text between multiple fictional or game‑inspired languages such as **Tibia Orc**, **Minion**, and more.
+OmniTranslate is a **Blazor** application using **MudBlazor** for the UI, **Prolog** for rule‑based translation, and optional **Azure OpenAI agent assistance**. 
+It supports both fictional and symbolic languages, specifically, **Tibia Orc**, **Minion**, **Morse**, and **Braille**.
 
 The system supports:
 
@@ -9,7 +10,8 @@ The system supports:
 - Line‑break preservation  
 - Bidirectional translation  
 - Modular translator architecture  
-- Prolog‑powered dictionaries  
+- Prolog‑powered dictionaries
+- AI assistant help via Azure OpenAI
 
 ![OmniTranslate Demo](./assets/demo_OmniTranslate.gif)
 
@@ -26,9 +28,10 @@ The system supports:
    - [English ↔ Morse](#english--morse)  
    - [English ↔ Braille](#english--braille)  
 5. [How It Works](#how-it-works)  
-6. [Adding New Languages](#adding-new-languages)  
-7. [Requirements](#requirements)  
-8. [Contact](#contact)
+6. [Adding New Languages](#adding-new-languages)
+7. [Setup AI Assistant help via Azure OpenAI](#setup_AI_assistant)
+8. [Requirements](#requirements)  
+9. [Contact](#contact)
 
 ---
 
@@ -96,15 +99,17 @@ This project is ideal for:
         │   │   ├── NotFound.razor                            # 404 page
         │   │   └── TranslatorPage.razor                      # Main translation interface
         │   │
-        │   └── Translator/                                   # Components used by TranslatorPage
-        │       ├── CopyButton.razor                          # Copy-to-clipboard button
-        │       ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
-        │       └── TranslationPanel.razor                    # Input/output text areas
+        │   ├── Translator/                                   # Components used by TranslatorPage
+        │   │   ├── CopyButton.razor                          # Copy-to-clipboard button
+        │   │   ├── LanguageSelector.razor                    # Dropdown for selecting translation mode
+        │   │   └── TranslationPanel.razor                    # Input/output text areas
+        │   └── Shared/                                       # Shared components
+        │       └── ChatPanel.razor                           # AI chat assistant panel    
         │
         ├── Models/
         │   └── TranslationMode.cs                            # Enum/model defining translation modes
         │
-        ├── Prolog/                                           # Prolog dictionaries (language rules)
+        ├── Prolog/                                           # Prolog dictionaries
         │   ├── braille.pl                                    # Braille dictionary
         │   ├── minion.pl                                     # Minion dictionary
         │   ├── morse.pl                                      # Morse dictionary
@@ -127,14 +132,17 @@ This project is ideal for:
         │   │   │   ├── MorseToEnglishTranslator.cs           # Morse → English
         │   │   │   └── OrcToEnglishTranslator.cs             # Orc → English
         │   │   │
+        │   │   ├── AIChatService.cs                          # AI chat service
         │   │   └── PrologTranslationService.cs               # Executes Prolog queries
         │   │
         │   └── Interfaces/                                   # Interfaces and abstractions
         │       │
+        │       ├── IAIChatService.cs                         # AI chat interface        
         │       ├── IPrologTranslationService.cs              # Interface for Prolog execution service
         │       └── ITranslator.cs                            # Base interface for all translators
         │
         ├── appsettings.json                                  # Application configuration
+        ├── appsettings.Development.json                      # Development environment config
         └── Program.cs                                        # Application entry point
 
 
@@ -309,32 +317,6 @@ Add the following C# classes:
 
 Both must implement the shared `ITranslator` interface and load your new `.pl` dictionary.  
 This ensures the new language integrates seamlessly with the existing translation pipeline.
-
----
-
-### 3. 🔌 Register the Translators  
-Add your new translators to the dependency injection container or translator service so they become available to the UI.
-
-Example (simplified):
-
-```csharp
-services.AddSingleton<ITranslator, EnglishToMyNewLangTranslator>();
-services.AddSingleton<ITranslator, MyNewLangToEnglishTranslator>();
-```
-
----
-
-### 4. 🎛️ Add to the UI  
-Update the language selection dropdown to include your new translation pair.  
-Once added, the UI will automatically route text to your new translators without requiring further changes.
-
-Example (simplified):
-
-```razor
-<option value="EnglishToMyNewLang">English → MyNewLang</option>
-<option value="MyNewLangToEnglish">MyNewLang → English</option>
-```
-
 After this step, your new language becomes fully available in the application.
 
 [Back to Table of contents](#toc)
@@ -352,6 +334,8 @@ To run OmniTranslate, you will need:
 [CSharpProlog](https://github.com/jsakamoto/CSharpProlog/tree/vnext/master) (vNext) engine by jsakamoto  
 to execute .pl dictionary files
 - A modern browser (Chrome, Edge, Firefox, Safari)
+- The Azure OpenAI endpoint URL and API key, which you obtain after creating an Azure OpenAI resource and deploying a model.
+Follow Microsoft’s guide here: [AI: Create an Azure OpenAI Resource and Deploy a Model](https://learn.microsoft.com/en-us/microsoft-cloud/dev/tutorials/openai-acs-msgraph/02-openai-create-resource)
 
 Optional for development:
 
