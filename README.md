@@ -307,10 +307,6 @@ During this process, you will obtain:
 
 You will need these values in the next step.
 
-[Back to Table of contents](#toc)
-
----
-
 ### Configure `appsettings.{environment}.json`
 
 Once you have your Azure OpenAI resource, add the following section to your environment‑specific settings file:
