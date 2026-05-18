@@ -97,7 +97,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                 if (ch == ' ')
                 {
                     if (sb.Length > 0 && sb[^1] == ' ')
+                    {
                         sb.Length--; // remove trailing space
+                    }
 
                     sb.Append("   "); // 3-space word separator
                     inNumberMode = false;
@@ -125,7 +127,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // Remove trailing space
             if (sb.Length > 0 && sb[^1] == ' ')
+            {
                 sb.Length--;
+            }
 
             return sb.ToString();
         }
@@ -138,7 +142,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // If Prolog has no mapping, return the character itself
             if (!sol.Solved)
+            {
                 return ch.ToString();
+            }
 
             // sol.ToString() looks like: braille("a","100000").
             var fact = sol.ToString();

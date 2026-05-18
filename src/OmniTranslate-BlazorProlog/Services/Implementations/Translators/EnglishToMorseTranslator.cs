@@ -63,7 +63,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                 {
                     // Avoid creating accidental double spaces before inserting the separator.
                     if (sb.Length > 0 && sb[^1] == ' ')
+                    {
                         sb.Length--;
+                    }
 
                     sb.Append("   "); // Morse word separator
                     continue;
@@ -80,7 +82,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // Remove trailing space at the end of the output.
             if (sb.Length > 0 && sb[^1] == ' ')
+            {
                 sb.Length--;
+            }
 
             return sb.ToString();
         }
@@ -97,7 +101,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             var sol = _engine.GetFirstSolution(query);
 
             if (!sol.Solved)
+            {
                 return null;
+            }
 
             // sol.ToString() returns something like: code("a",".-").
             var fact = sol.ToString();

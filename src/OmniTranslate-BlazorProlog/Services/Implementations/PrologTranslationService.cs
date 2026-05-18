@@ -51,11 +51,15 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations
         {
             // Ignore empty input
             if (string.IsNullOrWhiteSpace(input))
+            {
                 return Task.FromResult("");
+            }
 
             // Look up the translator for the requested mode
             if (_registry.Translators.TryGetValue(mode, out var translator))
+            {
                 return Task.FromResult(translator.Translate(input));
+            }
 
             // Unknown mode → return empty result
             return Task.FromResult("");

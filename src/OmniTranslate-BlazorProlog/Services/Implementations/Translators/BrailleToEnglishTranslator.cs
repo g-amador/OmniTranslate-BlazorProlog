@@ -128,7 +128,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                     // If raw is NOT a–j, number mode ends
                     if (inNumberMode && !"abcdefghij".Contains(raw))
+                    {
                         inNumberMode = false;
+                    }
 
                     string translated = raw;
 
@@ -172,7 +174,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             var sol = _engine.GetFirstSolution(query);
 
             if (!sol.Solved)
+            {
                 return null;
+            }
 
             // sol.ToString() looks like: braille("a","100000").
             var fact = sol.ToString();

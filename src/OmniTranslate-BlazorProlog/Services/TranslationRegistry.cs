@@ -12,7 +12,7 @@ namespace OmniTranslate_BlazorProlog.Services
         /// Dictionary of translators indexed by their unique ID.
         /// Example: "english_to_braille" → EnglishToBrailleTranslator instance.
         /// </summary>
-        public Dictionary<string, ITranslator> Translators { get; } = new();
+        public Dictionary<string, ITranslator> Translators { get; } = [];
 
         /// <summary>
         /// Scans the assembly for all classes implementing <see cref="ITranslator"/>,

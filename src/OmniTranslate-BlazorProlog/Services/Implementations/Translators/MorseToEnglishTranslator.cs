@@ -77,7 +77,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                 // Add a space between English words.
                 if (w < words.Length - 1)
+                {
                     sb.Append(' ');
+                }
             }
 
             return sb.ToString();
@@ -92,7 +94,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             var sol = _engine.GetFirstSolution(query);
 
             if (!sol.Solved)
+            {
                 return null;
+            }
 
             // sol.ToString() returns something like: code("a",".-").
             var fact = sol.ToString();

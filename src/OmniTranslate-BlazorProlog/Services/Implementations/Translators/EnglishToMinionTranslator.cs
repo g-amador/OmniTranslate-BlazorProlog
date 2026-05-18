@@ -128,7 +128,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // Emit any remaining word characters.
             if (current.Length > 0)
+            {
                 yield return current.ToString();
+            }
         }
     }
 }

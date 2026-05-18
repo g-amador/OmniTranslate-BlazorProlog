@@ -63,7 +63,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                     // Add a space after punctuation only if the next token is a word.
                     if (i + 1 < tokens.Count && char.IsLetter(tokens[i + 1][0]))
+                    {
                         sb.Append(' ');
+                    }
 
                     i++;
                     continue;
@@ -136,7 +138,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             var sol = _engine.GetFirstSolution(query);
 
             if (!sol.Solved)
+            {
                 return null;
+            }
 
             // sol.ToString() returns something like: minion_word("hello","bello").
             var fact = sol.ToString();
@@ -169,13 +173,17 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
                     // Add punctuation as its own token (ignore whitespace).
                     if (!char.IsWhiteSpace(c))
+                    {
                         tokens.Add(c.ToString());
+                    }
                 }
             }
 
             // Emit any leftover word.
             if (current.Length > 0)
+            {
                 tokens.Add(current.ToString());
+            }
 
             return tokens;
         }
@@ -190,7 +198,9 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         {
             // Add a space only if the next token is a word (not punctuation).
             if (nextIndex < tokens.Count && !IsPunctuation(tokens[nextIndex]))
+            {
                 sb.Append(' ');
+            }
         }
     }
 }
