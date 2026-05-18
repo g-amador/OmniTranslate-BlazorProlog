@@ -10,9 +10,28 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations
     {
         /// <summary>
         /// Registry containing all available translators.
-        /// Each translator is identified by a unique mode ID.
+        /// In production, this loads all real Prolog translators.
+        /// In tests, a custom registry can be injected to avoid loading .pl files.
         /// </summary>
-        private readonly TranslationRegistry _registry = new();
+        private readonly TranslationRegistry _registry;
+
+        /// <summary>
+        /// Default constructor used by the application.
+        /// Loads all real translators automatically.
+        /// </summary>
+        public PrologTranslationService()
+        {
+            _registry = new TranslationRegistry(); // loads defaults
+        }
+
+        /// <summary>
+        /// Test-friendly constructor.
+        /// Allows injecting a custom registry (e.g., with fake translators).
+        /// </summary>
+        public PrologTranslationService(TranslationRegistry registry)
+        {
+            _registry = registry;
+        }
 
         /// <summary>
         /// Translates the specified input text using the translator

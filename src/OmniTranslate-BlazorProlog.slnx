@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="OmniTranslate-BlazorProlog/OmniTranslate-BlazorProlog.csproj" />
+  <Project Path="OmniTranslate_BlazorProlog.Tests/OmniTranslate_BlazorProlog.Tests.csproj" Id="25e0b196-99ec-4a4c-a7b4-e7c0b99e3531" />
 </Solution>

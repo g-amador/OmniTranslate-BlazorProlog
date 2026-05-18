@@ -17,9 +17,15 @@ namespace OmniTranslate_BlazorProlog.Services
         /// <summary>
         /// Scans the assembly for all classes implementing <see cref="ITranslator"/>,
         /// creates an instance of each one, and registers them by their unique ID.
+        // Set loadDefaults to false during unit tests to avoid loading real Prolog translators.
         /// </summary>
-        public TranslationRegistry()
+        public TranslationRegistry(bool loadDefaults = true)
         {
+            if (!loadDefaults)
+            {
+                return; // Skip loading real translators in tests
+            }
+            return; // Skip loading real translators in tests
             // Find all types in the assembly that implement ITranslator.
             // We exclude interfaces and abstract classes because they cannot be instantiated.
             var translators = typeof(ITranslator).Assembly
