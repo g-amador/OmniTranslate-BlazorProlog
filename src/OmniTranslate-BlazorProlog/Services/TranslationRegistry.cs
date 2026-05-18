@@ -25,7 +25,7 @@ namespace OmniTranslate_BlazorProlog.Services
             {
                 return; // Skip loading real translators in tests
             }
-            return; // Skip loading real translators in tests
+
             // Find all types in the assembly that implement ITranslator.
             // We exclude interfaces and abstract classes because they cannot be instantiated.
             var translators = typeof(ITranslator).Assembly
