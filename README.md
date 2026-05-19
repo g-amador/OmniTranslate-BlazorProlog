@@ -6,7 +6,7 @@ It supports both fictional and symbolic languages, specifically, **Tibia Orc**, 
 The system supports:
 
 - Multi‑word expressions  
-- Punctuation preservation  
+- Punctuation preservation
 - Line‑break preservation  
 - Bidirectional translation  
 - Modular translator architecture  
