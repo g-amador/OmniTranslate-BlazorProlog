@@ -65,6 +65,7 @@ This project is ideal for:
 
 ## 📁 <a name="folder-structure">Folder Structure
 
+```
   OmniTranslate-BlazorProlog/                               # Main repository
     │
     ├── LICENSE                                             # MIT license
@@ -146,6 +147,7 @@ This project is ideal for:
 			├── appsettings.json                                  # Application configuration
 			├── appsettings.Development.json                      # Development environment config
 			└── Program.cs                                        # Application entry point
+```
 
 [Back to Table of contents](#toc)
 
