@@ -362,7 +362,7 @@ Optional for development:
 
 ---
 
-## 📄 <a name="contact">Contact & Usage Notice
+## 📬 <a name="contact">Contact & Usage Notice
 
 OmniTranslate is released under the MIT License, which allows you to freely use, modify, distribute, and build upon the project — including creating your own translators, dictionaries, demos, extensions, or integrating it into other applications.
 
