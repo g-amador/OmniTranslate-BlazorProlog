@@ -371,7 +371,7 @@ Please keep the following in mind:
 - You may not claim authorship of OmniTranslate or its built‑in translators.
 - If you extend the system, create new language packs, build tools on top of it, or port it to another platform or programming language, I kindly ask that you let me know. I genuinely enjoy seeing how the project evolves and how others build upon it.
 
-For full legal details, please refer to the **LICENSE** file included with the project.
+For full legal details, please refer to the **[LICENSE](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/LICENSE)** file included with the project.
 
 If you have questions, suggestions, or want to share your work, feel free to reach out:
 
