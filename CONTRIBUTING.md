@@ -73,6 +73,9 @@ Both must:
 - Load your .pl dictionary
 - Provide the language name and direction
 
+Once these steps are completed, the new language will appear in the OmniTranslate UI.
+
+
 Once added, the new language becomes available in the UI.
 
 [Back to Table of contents](#toc)
@@ -88,39 +91,6 @@ The following fictional and constructed languages are planned for OmniTranslate 
 - **Hylian** (Zelda)
 - **Aurebesh** (Star Wars)
 - **Tolkien Elvish** (Sindarin / Quenya)
-
-Each language requires:
-
-1. A Prolog dictionary file under `/Prolog/`  
-   Example:
-
-  ```
-  klingon.pl
-  ```
-
-  With rules following the pattern:
-
-  ```prolog
-  klingon_word("hello", "nuqneH").
-  ```  
-
-2. Two translator classes under `/Translators/`
-
-  ```
-  EnglishToKlingonTranslator.cs
-  KlingonToEnglishTranslator.cs
-  ```
-
-  Both must implement `ITranslator` and load the `.pl` dictionary.
-
-3. Registration in `Program.cs`  
-
-```csharp
-builder.Services.AddSingleton<ITranslator, EnglishToKlingonTranslator>();
-builder.Services.AddSingleton<ITranslator, KlingonToEnglishTranslator>();
-```
-
-Once these steps are completed, the new language will appear in the OmniTranslate UI.
 
 [Back to Table of contents](#toc)
 
