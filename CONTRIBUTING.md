@@ -13,7 +13,7 @@ Below are the two main areas where contributions are welcome:
 ## 📑 <a name="toc">Table of Contents
 
 1. [➕ Adding New Languages](#adding-new-languages)
-2. [ 🌍 Languages You Can Contribute](#new-languages)
+2. [🌍 Languages You Can Contribute](#new-languages)
 3. [🌐 Exposing OmniTranslate Through an API](#exposing-OmniTranslate)
 4. [🧪 Tests](#tests)  
 5. [❤️ Thank You](#thanks)
