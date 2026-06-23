@@ -356,8 +356,8 @@ OmniTranslate is released under the MIT License, which allows you to freely use,
 If you plan to extend the system, create new language packs, or build tools on top of it,  
 please check:
 
-- **CONTRIBUTING.md** — for guidelines on how to structure contributions  
-- **AI.md** — for generating language dictionaries and translator classes using AI tools
+- **[CONTRIBUTING.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/CONTRIBUTING.md)** — for guidelines on how to structure contributions
+- **[AI.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/AI.md)** — for generating language dictionaries and translator classes using AI tools
 
 You may not claim authorship of OmniTranslate or its built‑in translators.
 
