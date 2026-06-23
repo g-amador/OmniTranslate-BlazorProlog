@@ -1,0 +1,165 @@
+# OmniTranslate – How to Contribute
+
+Thank you for your interest in contributing to OmniTranslate!
+
+This project is designed to be easy to extend.  
+Below are the two main areas where contributions are welcome:
+
+- Adding new fictional or constructed languages  
+- Exposing the translation engine through a REST API  
+
+---
+
+## 📑 <a name="toc">Table of Contents
+
+1. [➕ Adding New Languages](#adding-new-languages)
+2. [ 🌍 Languages You Can Contribute](#new-languages)
+3. [🌐 Exposing OmniTranslate Through an API](#exposing_OmniTranslate_through_api)
+4. [🧪 Tests](#tests)  
+5. [❤️ Thank You](#thanks)
+
+---
+
+## ➕ <a name="adding-new-languages"> Adding New Languages
+
+OmniTranslate supports modular language packs.  
+To add a new language, follow these steps:
+
+### 1. 📄 Create a Prolog Dictionary
+
+Add a new `.pl` file under:
+
+```
+/Prolog/
+```
+
+Example:
+
+```
+klingon.pl
+```
+
+Inside the file, define translation rules using this pattern:
+
+```prolog
+klingon_word("hello", "nuqneH").
+klingon_word("friend", "jup").
+```
+
+Rules must follow:
+
+```prolog
+<language>_word("source", "target").
+```
+
+This allows the Prolog engine to load your dictionary automatically.
+
+2. 🧠 Create Two Translators
+Add two C# classes under:
+
+```
+/Translators/
+```
+
+Example:
+
+```
+EnglishToKlingonTranslator.cs
+KlingonToEnglishTranslator.cs
+```
+
+Both must:
+- Implement the ITranslator interface
+- Load your .pl dictionary
+- Provide the language name and direction
+
+Once added, the new language becomes available in the UI.
+
+[Back to Table of contents](#toc)
+
+---
+
+## 🌍 <a name="new-languages"> Languages You Can Contribute
+
+The following fictional and constructed languages are planned for OmniTranslate and open for contribution:
+
+- **Klingon** (Star Trek)
+- **Dovahzul** (Skyrim)
+- **Hylian** (Zelda)
+- **Aurebesh** (Star Wars)
+- **Tolkien Elvish** (Sindarin / Quenya)
+
+Each language requires:
+
+1. A Prolog dictionary file under `/Prolog/`  
+   Example:
+
+  ```
+  klingon.pl
+  ```
+
+  With rules following the pattern:
+
+  ```prolog
+  klingon_word("hello", "nuqneH").
+  ```  
+
+2. Two translator classes under `/Translators/`
+
+  ```
+  EnglishToKlingonTranslator.cs
+  KlingonToEnglishTranslator.cs
+  ```
+
+  Both must implement `ITranslator` and load the `.pl` dictionary.
+
+3. Registration in `Program.cs`  
+
+```csharp
+builder.Services.AddSingleton<ITranslator, EnglishToKlingonTranslator>();
+builder.Services.AddSingleton<ITranslator, KlingonToEnglishTranslator>();
+```
+
+Once these steps are completed, the new language will appear in the OmniTranslate UI.
+
+[Back to Table of contents](#toc)
+
+---
+
+## 🌐 <a name="exposing_OmniTranslate_through_api"> Exposing OmniTranslate Through an API
+
+Contributors may also help expose the translation engine via a REST API.
+
+Planned endpoints include:
+
+- `POST /translate` — Translate text between supported languages  
+- `GET /languages` — List available languages  
+
+Contributions may include:
+
+- Implementing API controllers  
+- Creating request/response models  
+- Adding validation  
+- Writing API documentation  
+- Adding tests for API behavior  
+
+[Back to Table of contents](#toc)
+
+---
+
+## 🧪 <a name="tests"> Tests
+
+If you add a new language or API feature, please include tests under:
+
+```
+/Tests/
+```
+
+[Back to Table of contents](#toc)
+
+---
+
+## ❤️ <a name="thanks"> Thank You
+Your contributions help expand OmniTranslate into a universal translator for fictional and constructed languages.
+
+[Back to Table of contents](#toc)
