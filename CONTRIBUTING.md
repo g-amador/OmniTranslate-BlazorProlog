@@ -25,7 +25,7 @@ Below are the two main areas where contributions are welcome:
 OmniTranslate supports modular language packs.  
 To add a new language, follow these steps:
 
-### 1. 📄 Create a Prolog Dictionary
+### 📄 Create a Prolog Dictionary
 
 Add a new `.pl` file under:
 
@@ -54,7 +54,7 @@ Rules must follow:
 
 This allows the Prolog engine to load your dictionary automatically.
 
-2. 🧠 Create Two Translators
+### 🧠 Create Two Translators
 Add two C# classes under:
 
 ```
