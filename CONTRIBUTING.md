@@ -14,7 +14,7 @@ Below are the two main areas where contributions are welcome:
 
 1. [➕ Adding New Languages](#adding-new-languages)
 2. [ 🌍 Languages You Can Contribute](#new-languages)
-3. [🌐 Exposing OmniTranslate Through an API](#exposing_OmniTranslate_through_api)
+3. [🌐 Exposing OmniTranslate Through an API](#exposing_OmniTranslate)
 4. [🧪 Tests](#tests)  
 5. [❤️ Thank You](#thanks)
 
@@ -96,7 +96,7 @@ The following fictional and constructed languages are planned for OmniTranslate 
 
 ---
 
-## 🌐 <a name="exposing_OmniTranslate_through_api"> Exposing OmniTranslate Through an API
+## 🌐 <a name="exposing_OmniTranslate"> Exposing OmniTranslate Through an API
 
 Contributors may also help expose the translation engine via a REST API.
 
