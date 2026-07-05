@@ -267,8 +267,8 @@ OmniTranslate is designed to be easily extensible.
 If you want to add a new language, create a translator, or build a new Prolog dictionary,  
 please refer to the contribution guides:
 
-- **[CONTRIBUTING.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/CONTRIBUTING.md)** — explains how to add new languages, translators, and API endpoints  
-- **[AI.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/AI.md)** — provides a ready‑to‑use prompt for generating Prolog dictionaries and translator classes using external AI tools
+- **[CONTRIBUTING.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/CONTRIBUTING.md)** — explains how to add new languages, translators, and API endpoints  
+- **[AI.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/AI.md)** — provides a ready‑to‑use prompt for generating Prolog dictionaries and translator classes using external AI tools
 
 These documents contain the full instructions for extending OmniTranslate.
 
@@ -308,8 +308,7 @@ Once you have your Azure OpenAI resource, add the following section to your envi
 "AzureOpenAI": {
   "Endpoint": "https://YOUR-RESOURCE-NAME.openai.azure.com/",
   "ApiKey": "YOUR-AZURE-OPENAI-KEY",
-  "Deployment": "YOUR-MODEL-DEPLOYMENT-NAME",
-  "ApiVersion": "2024-02-15-preview"
+  "Deployment": "YOUR-MODEL-DEPLOYMENT-NAME"
 }
 ```
 
@@ -356,12 +355,12 @@ OmniTranslate is released under the MIT License, which allows you to freely use,
 If you plan to extend the system, create new language packs, or build tools on top of it,  
 please check:
 
-- **[CONTRIBUTING.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/CONTRIBUTING.md)** — for guidelines on how to structure contributions
-- **[AI.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/AI.md)** — for generating language dictionaries and translator classes using AI tools
+- **[CONTRIBUTING.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/CONTRIBUTING.md)** — for guidelines on how to structure contributions
+- **[AI.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/AI.md)** — for generating language dictionaries and translator classes using AI tools
 
 You may not claim authorship of OmniTranslate or its built‑in translators.
 
-For full legal details, refer to the **[LICENSE](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/master/LICENSE)** file.
+For full legal details, refer to the **[LICENSE](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/LICENSE)** file.
 
 If you have questions, suggestions, or want to share your work, feel free to reach out:  
 📧 **[g.n.p.amador@gmail.com](mailto:g.n.p.amador@gmail.com)**
