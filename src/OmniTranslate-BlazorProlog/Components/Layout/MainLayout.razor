@@ -24,7 +24,10 @@
     <MudAppBar Color="Color.Primary" Class="top-bar">
         <MudText Typo="Typo.h6">OmniTranslate</MudText>
         <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.DarkMode" OnClick="ToggleDark" />
+        <MudIconButton Icon="@(_isDark 
+            ? Icons.Material.Filled.LightMode 
+            : Icons.Material.Filled.DarkMode)"
+            OnClick="ToggleDark" />
     </MudAppBar>
 
     <!--
