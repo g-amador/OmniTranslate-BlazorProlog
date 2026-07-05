@@ -1,7 +1,7 @@
+using Azure;
+using Azure.AI.OpenAI;
+using Microsoft.Extensions.AI;
 using OmniTranslate_BlazorProlog.Services.Interfaces;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
 
 namespace OmniTranslate_BlazorProlog.Services.Implementations
 {
@@ -10,79 +10,70 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations
     /// </summary>
     public class AiChatService : IAIChatService
     {
-        private readonly HttpClient _http;
+        private IChatClient? _client;
         private readonly string _endpoint;
         private readonly string _apiKey;
         private readonly string _deployment;
-        private readonly string _apiVersion;
+
+        // Allow tests to inject a mock client
+        public IChatClient? TestClient
+        {
+            set => _client = value;
+        }
 
         /// <summary>
         /// Initializes the Azure OpenAI chat service using configuration values.
         /// </summary>
         /// <param name="config">Application configuration.</param>
-        /// <param name="http">Injected HttpClient instance.</param>
-        public AiChatService(IConfiguration config, HttpClient http)
+        public AiChatService(IConfiguration config)
         {
-            _http = http;
-
             var settings = config.GetSection("AzureOpenAI");
 
-            _endpoint = settings["Endpoint"] ?? throw new Exception("Missing AzureOpenAI:Endpoint");
-            _apiKey = settings["ApiKey"] ?? throw new Exception("Missing AzureOpenAI:ApiKey");
-            _deployment = settings["Deployment"] ?? throw new Exception("Missing AzureOpenAI:Deployment");
-            _apiVersion = settings["ApiVersion"] ?? "2025-01-01-preview";
-        }
+            _endpoint = settings["Endpoint"] ?? "";
+            _apiKey = settings["ApiKey"] ?? "";
+            _deployment = settings["Deployment"] ?? "";
 
-        /// <inheritdoc/>
-        /// <inheritdoc/>
-        public async Task<string> AskAsync(string prompt)
-        {
-            // Validate configuration before making the request
+            // Missing config
             if (string.IsNullOrWhiteSpace(_endpoint) ||
                 string.IsNullOrWhiteSpace(_apiKey) ||
                 string.IsNullOrWhiteSpace(_deployment))
             {
-                return "⚠️ Azure OpenAI is not configured correctly. Please check your settings in appsettings.Development.json.";
+                return;
             }
 
-            // Detect placeholder values
+            // Placeholder detection
             if (_endpoint.Contains("YOUR-RESOURCE-NAME") ||
                 _apiKey.Contains("YOUR-AZURE-OPENAI-KEY") ||
                 _deployment.Contains("YOUR-MODEL-DEPLOYMENT-NAME"))
             {
-                return "⚠️ Azure OpenAI settings still contain placeholder values. Please update Endpoint, ApiKey, and Deployment.";
+                return;
             }
 
-            _http.DefaultRequestHeaders.Authorization =
-                new AuthenticationHeaderValue("Bearer", _apiKey);
+            // Authentication for Azure OpenAI with API key
+            var client = new AzureOpenAIClient(
+                new Uri(_endpoint),
+                new AzureKeyCredential(_apiKey)
+            );
 
-            var body = new
-            {
-                messages = new[]
-                {
-            new { role = "user", content = prompt }
+            _client = client.GetChatClient(_deployment).AsIChatClient();
         }
-            };
 
-            var json = JsonSerializer.Serialize(body);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            var url = $"{_endpoint}openai/deployments/{_deployment}/chat/completions?api-version={_apiVersion}";
+        /// <inheritdoc/>
+        public async Task<string> AskAsync(string prompt)
+        {
+            // Missing config
+            if (_client == null)
+            {
+                return "⚠️ Azure OpenAI is not configured correctly. Please check your settings.";
+            }
 
             try
             {
-                var response = await _http.PostAsync(url, content);
-                response.EnsureSuccessStatusCode();
+                var response = await _client.GetResponseAsync(
+                    new[] { new ChatMessage(ChatRole.User, prompt) }
+                );
 
-                var responseJson = await response.Content.ReadAsStringAsync();
-
-                using var doc = JsonDocument.Parse(responseJson);
-
-                return doc.RootElement
-                    .GetProperty("choices")[0]
-                    .GetProperty("message")
-                    .GetProperty("content")
-                    .GetString();
+                return response.Text ?? "⚠️ No response returned from Azure OpenAI.";
             }
             catch (Exception ex)
             {

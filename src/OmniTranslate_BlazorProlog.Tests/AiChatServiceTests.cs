@@ -1,8 +1,7 @@
+using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using Moq.Protected;
 using OmniTranslate_BlazorProlog.Services.Implementations;
-using System.Net;
 
 namespace OmniTranslate_BlazorProlog.Tests
 {
@@ -29,26 +28,6 @@ namespace OmniTranslate_BlazorProlog.Tests
                 .Build();
         }
 
-        // Creates a mocked HttpClient that returns a predefined JSON response.
-        private HttpClient CreateMockHttp(string responseJson, HttpStatusCode status = HttpStatusCode.OK)
-        {
-            var handler = new Mock<HttpMessageHandler>();
-
-            handler.Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = status,
-                    Content = new StringContent(responseJson)
-                });
-
-            return new HttpClient(handler.Object);
-        }
-
         /// <summary>
         /// Ensures the service returns a warning when required configuration
         /// values are missing.
@@ -57,9 +36,7 @@ namespace OmniTranslate_BlazorProlog.Tests
         public async Task AskAsync_ReturnsWarning_WhenConfigMissing()
         {
             var config = BuildConfig("", "key", "deployment");
-            var http = new HttpClient();
-
-            var service = new AiChatService(config, http);
+            var service = new AiChatService(config);
 
             var result = await service.AskAsync("Hello");
 
@@ -67,11 +44,11 @@ namespace OmniTranslate_BlazorProlog.Tests
         }
 
         /// <summary>
-        /// Ensures the service detects placeholder configuration values
+        /// Ensures the service detects wrong configuration values
         /// and returns a helpful warning.
         /// </summary>
         [Fact]
-        public async Task AskAsync_ReturnsWarning_WhenPlaceholdersUsed()
+        public async Task AskAsync_ReturnsWarning_WhenWrongConfigurationUsed()
         {
             var config = BuildConfig(
                 "YOUR-RESOURCE-NAME",
@@ -79,12 +56,11 @@ namespace OmniTranslate_BlazorProlog.Tests
                 "YOUR-MODEL-DEPLOYMENT-NAME"
             );
 
-            var http = new HttpClient();
-            var service = new AiChatService(config, http);
+            var service = new AiChatService(config);
 
             var result = await service.AskAsync("Hello");
 
-            Assert.Contains("placeholder values", result);
+            Assert.Contains("not configured correctly.", result);
         }
 
         /// <summary>
@@ -94,20 +70,22 @@ namespace OmniTranslate_BlazorProlog.Tests
         [Fact]
         public async Task AskAsync_ReturnsParsedResponse_WhenSuccess()
         {
-            var json = """
-            {
-                "choices": [
-                    {
-                        "message": { "content": "Hello from Azure!" }
-                    }
-                ]
-            }
-            """;
+            var mockClient = new Mock<IChatClient>();
+            mockClient
+                .Setup(c => c.GetResponseAsync(
+                    It.IsAny<IEnumerable<ChatMessage>>(),
+                    It.IsAny<ChatOptions?>(),
+                    It.IsAny<CancellationToken>()
+                ))
+                .ReturnsAsync(new ChatResponse(new ChatMessage(new ChatRole("user"), "Hello from Azure!")));
+
 
             var config = BuildConfig("https://example.com/", "key", "deployment");
-            var http = CreateMockHttp(json);
 
-            var service = new AiChatService(config, http);
+            var service = new AiChatService(config)
+            {
+                TestClient = mockClient.Object
+            };
 
             var result = await service.AskAsync("Hello");
 
@@ -121,20 +99,21 @@ namespace OmniTranslate_BlazorProlog.Tests
         [Fact]
         public async Task AskAsync_ReturnsFriendlyError_OnException()
         {
+            var mockClient = new Mock<IChatClient>();
+            mockClient
+                .Setup(c => c.GetResponseAsync(
+                    It.IsAny<IEnumerable<ChatMessage>>(),
+                    null,
+                    default
+                ))
+                .ThrowsAsync(new Exception("Network down"));
+
             var config = BuildConfig("https://example.com/", "key", "deployment");
 
-            // Mock handler that throws an exception
-            var handler = new Mock<HttpMessageHandler>();
-            handler.Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ThrowsAsync(new HttpRequestException("Network down"));
-
-            var http = new HttpClient(handler.Object);
-            var service = new AiChatService(config, http);
+            var service = new AiChatService(config)
+            {
+                TestClient = mockClient.Object
+            };
 
             var result = await service.AskAsync("Hello");
 

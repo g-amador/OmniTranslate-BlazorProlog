@@ -41,7 +41,7 @@ builder.Services.AddSingleton<TranslationModeProvider>();
 /// <summary>
 /// Registers the Azure OpenAI chat service and injects HttpClient for API calls.
 /// </summary>
-builder.Services.AddHttpClient<IAIChatService, AiChatService>();
+builder.Services.AddScoped<IAIChatService, AiChatService>();
 
 var app = builder.Build();
 
