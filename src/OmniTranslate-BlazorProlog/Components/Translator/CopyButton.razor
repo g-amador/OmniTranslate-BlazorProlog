@@ -11,7 +11,7 @@
 
 @code {
     // Text that will be copied to the clipboard
-    [Parameter] public string TextToCopy { get; set; }
+    [Parameter] public string TextToCopy { get; set; } = string.Empty;
 
     // Invokes a JavaScript function to copy text to the clipboard
     // Requires a JS function named "copyToClipboard" to exist in your scripts

@@ -89,7 +89,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             return sb.ToString();
         }
 
-        private string QueryMorse(char ch)
+        private string? QueryMorse(char ch)
         {
             // Convert the character into a Prolog atom.
             string atom = ch.ToString();
@@ -107,7 +107,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() returns something like: code("a",".-").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             // Extract the Morse code from the Prolog fact.
             return parts.Length >= 2 ? parts[1] : null;

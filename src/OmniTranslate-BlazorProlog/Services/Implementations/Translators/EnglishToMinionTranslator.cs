@@ -77,7 +77,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                             // sol.ToString() returns something like: minion_word("hello","bello").
                             // Extract the Minion translation from the Prolog fact.
                             var fact = sol.ToString();
-                            var result = fact.Split('"')[1];
+                            var result = fact!.Split('"')[1];
                             sb.Append(result);
                         }
                         else

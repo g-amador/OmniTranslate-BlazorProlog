@@ -85,7 +85,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             return sb.ToString();
         }
 
-        private string QueryMorse(string morse)
+        private string? QueryMorse(string morse)
         {
             // Build a Prolog query to retrieve the English character.
             var query = $"code(X, \"{morse}\").";
@@ -100,7 +100,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() returns something like: code("a",".-").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             // Extract the English character from the Prolog fact.
             return parts.Length >= 2 ? parts[1] : null;

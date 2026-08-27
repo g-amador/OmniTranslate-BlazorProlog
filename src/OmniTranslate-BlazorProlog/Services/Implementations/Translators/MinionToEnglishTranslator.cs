@@ -71,7 +71,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                     continue;
                 }
 
-                string translated = null;
+                string? translated = null;
 
                 // Try matching 4-word Minion expressions (e.g., "bee do bee do").
                 if (i + 3 < tokens.Count)
@@ -129,7 +129,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             return sb.ToString().Trim();
         }
 
-        private string QueryMinion(string minion)
+        private string? QueryMinion(string? minion)
         {
             // Build a Prolog query to translate the Minion phrase.
             var query = $"minion_word(E, \"{minion}\").";
@@ -144,7 +144,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() returns something like: minion_word("hello","bello").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             // Extract the English translation from the Prolog fact.
             return parts.Length >= 2 ? parts[1] : null;

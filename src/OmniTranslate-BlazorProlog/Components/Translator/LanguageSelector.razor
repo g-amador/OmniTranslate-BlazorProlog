@@ -14,7 +14,7 @@
     }
 </MudSelect>
 
-@code {
+    @code {
     /// <summary>
     /// Provides the list of available translation modes.
     /// Injected so the component always reflects the current configuration.
@@ -32,4 +32,15 @@
     /// Used by the parent component to react to user selection.
     /// </summary>
     [Parameter] public EventCallback<TranslationMode> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Default constructor.
+    /// </summary>
+    /// <param name="modeProvider"> The list of available translation modes.</param>
+    /// <param name="value">Value of the currently selected translation mode.</param>
+    public LanguageSelector(TranslationModeProvider modeProvider, TranslationMode value)
+    {
+        ModeProvider = modeProvider;
+        Value = value;
+    }
 }
