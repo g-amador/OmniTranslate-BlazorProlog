@@ -118,7 +118,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                     }
 
                     // Query Prolog for English character
-                    string raw = QueryBraille(binary);
+                    string? raw = QueryBraille(binary);
 
                     if (raw == null)
                     {
@@ -168,7 +168,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         }
 
         // Queries Prolog for the English character corresponding to a binary Braille pattern.
-        private string QueryBraille(string binaryPattern)
+        private string? QueryBraille(string? binaryPattern)
         {
             var query = $"braille(X, \"{binaryPattern}\").";
             var sol = _engine.GetFirstSolution(query);
@@ -180,7 +180,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() looks like: braille("a","100000").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             return parts.Length >= 2 ? parts[1] : null;
         }

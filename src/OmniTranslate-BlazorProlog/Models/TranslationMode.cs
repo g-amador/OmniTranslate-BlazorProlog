@@ -11,24 +11,24 @@ namespace OmniTranslate_BlazorProlog.Models
         /// Unique identifier for the translation mode.
         /// Typically formatted as "english_to_morse" or "morse_to_english".
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         /// <summary>
         /// Human‑readable label shown in the UI.
         /// Example: "English <-> Morse".
         /// </summary>
-        public string Label { get; set; }
+        public string Label { get; set; } = string.Empty;
 
         /// <summary>
         /// The source language or encoding name.
         /// Example: "english".
         /// </summary>
-        public string From { get; set; }
+        public string From { get; set; } = string.Empty;
 
         /// <summary>
         /// The target language or encoding name.
         /// Example: "morse".
         /// </summary>
-        public string To { get; set; }
+        public string To { get; set; } = string.Empty;
     }
 }

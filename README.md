@@ -1,6 +1,6 @@
 # OmniTranslate – Blazor + Prolog Language Converter With AI Assistant
 
-OmniTranslate is a **Blazor** application using **MudBlazor** for the UI, **Prolog** for rule‑based translation, and optional **Azure OpenAI agent assistance**. 
+OmniTranslate is a **Blazor** application using **MudBlazor** for the UI, **Prolog** for rule‑based translation, central package management (CPM), and optional **Azure OpenAI agent assistance**. 
 It supports both fictional and symbolic languages, specifically, **Tibia Orc**, **Minion**, **Morse**, and **Braille**.
 
 The system supports:

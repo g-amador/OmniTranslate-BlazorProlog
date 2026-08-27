@@ -23,14 +23,14 @@
     /// Label displayed above the text field (e.g., "English", "Morse").
     /// </summary>
     [Parameter]
-    public string Label { get; set; }
+    public string Label { get; set; } = string.Empty;
 
     /// <summary>
     /// The current text value inside the translation panel.
     /// Controlled by the parent component.
     /// </summary>
     [Parameter]
-    public string Text { get; set; }
+    public string Text { get; set; } = string.Empty;
 
     /// <summary>
     /// Event callback triggered whenever the user edits the text.

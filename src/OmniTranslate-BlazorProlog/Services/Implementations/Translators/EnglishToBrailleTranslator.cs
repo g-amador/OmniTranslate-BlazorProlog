@@ -114,12 +114,14 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                 }
 
                 // Ask Prolog for the binary Braille pattern
-                string binary = QueryBrailleBinary(ch);
+                string? binary = QueryBrailleBinary(ch);
 
                 // Convert binary → Unicode Braille
-                string unicode = BinaryToUnicode.ContainsKey(binary)
-                    ? BinaryToUnicode[binary]
-                    : ch.ToString(); // fallback for unknown characters
+                string unicode = binary is null
+                    ? ch.ToString() // fallback for unknown characters
+                    : BinaryToUnicode.TryGetValue(binary, out string? value)
+                        ? value
+                        : ch.ToString(); // fallback for unknown characters
 
                 sb.Append(unicode);
                 sb.Append(' ');
@@ -135,7 +137,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
         }
 
         // Queries Prolog for the binary Braille pattern of a character.
-        private string QueryBrailleBinary(char ch)
+        private string? QueryBrailleBinary(char ch)
         {
             var query = $"braille(\"{ch}\", B).";
             var sol = _engine.GetFirstSolution(query);
@@ -148,7 +150,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() looks like: braille("a","100000").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             return parts.Length >= 2 ? parts[1] : null;
         }

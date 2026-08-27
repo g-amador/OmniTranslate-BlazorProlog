@@ -77,7 +77,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
                         {
                             // Extract the Orc translation from the Prolog fact.
                             var fact = sol.ToString();
-                            var result = ExtractQuotedValue(fact);
+                            var result = ExtractQuotedValue(fact!);
                             sb.Append(result);
                         }
                         else

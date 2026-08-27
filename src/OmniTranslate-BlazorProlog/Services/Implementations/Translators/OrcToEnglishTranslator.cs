@@ -82,7 +82,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
             return sb.ToString().Trim();
         }
 
-        private string QueryOrc(string orc)
+        private string? QueryOrc(string orc)
         {
             // Build a Prolog query to translate the Orc word.
             var query = $"orc_word(E, \"{orc}\").";
@@ -97,7 +97,7 @@ namespace OmniTranslate_BlazorProlog.Services.Implementations.Translators
 
             // sol.ToString() returns something like: orc_word("hi","charach").
             var fact = sol.ToString();
-            var parts = fact.Split('"');
+            var parts = fact!.Split('"');
 
             // Extract the English translation from the Prolog fact.
             return parts.Length >= 2 ? parts[1] : null;
