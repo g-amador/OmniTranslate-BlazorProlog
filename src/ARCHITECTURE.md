@@ -2,11 +2,11 @@
 
 ```text
 Omnitranslate-blazorprolog/
-├── ARCHITECTURE.md                                       # Detailed project architecture & directory structure
-├── README.md                                             # Project documentation
 ├── AI.md                                                 # Provides a ready‑to‑use prompt for generating Prolog dictionaries and translator classes using external AI tools
+├── ARCHITECTURE.md                                       # Detailed project architecture & directory structure
 ├── CONTRIBUTING.md                                       # Explains how to add new languages, translators, and API endpoints
 ├── LICENSE                                               # MIT license
+├── README.md                                             # Project documentation
 └── src/
     ├── Directory.Packages.props                          # Centralized NuGet package version management
     ├── nuget.config                                      # NuGet feed configuration
