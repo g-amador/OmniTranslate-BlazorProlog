@@ -21,7 +21,7 @@ The system supports:
 
 1. [🧭 Overview](#overview)  
 2. [✨ Features](#features)  
-3. [📁 Folder Structure](#folder-structure)  
+3. [📁 Project Architecture](#project-architecture)  
 4. [🧪 Usage Examples](#usage-examples)
 5. [⚙️ How It Works](#how-it-works)  
 6. [➕ Adding New Languages](#adding-new-languages)
@@ -63,81 +63,25 @@ This project is ideal for:
 
 ---
 
-## 📁 <a name="folder-structure">Folder Structure
+## 📁 <a name="project-architecture">Project Architecture
 
-```
+```text
 Omnitranslate-blazorprolog/
-├── README.md                                             # Project documentation
-├── AI.md                                                 # Provides a ready‑to‑use prompt for generating Prolog dictionaries and translator classes using external AI tools
-├── CONTRIBUTING.md                                       # Explains how to add new languages, translators, and API endpoints
-├── LICENSE                                               # MIT license
-└── src/
-    ├── Directory.Packages.props                          # Centralized NuGet package version management
-    ├── nuget.config                                      # NuGet feed configuration
-    ├── OmniTranslate-BlazorProlog.slnx                   # Solution file
-    ├── OmniTranslate-BlazorProlog/
-    │   ├── appsettings.Development.json                  # Development environment config
-    │   ├── appsettings.json                              # Application configuration
-    │   ├── OmniTranslate-BlazorProlog.csproj             # Project file
-    │   ├── Program.cs                                    # Application entry point
-    │   ├── Components/                                   # Blazor UI components
-    │   │   ├── _Imports.razor                            # Shared Razor imports
-    │   │   ├── App.razor                                 # Blazor application root
-    │   │   ├── Routes.razor                              # Application routing
-    │   │   ├── Layout/                                   # Application layout components
-    │   │   │   ├── MainLayout.razor                      # Main layout wrapper
-    │   │   │   ├── MainLayout.razor.css                  # Layout styling
-    │   │   │   ├── ReconnectModal.razor                  # Connection recovery UI
-    │   │   │   ├── ReconnectModal.razor.css              # Modal styling
-    │   │   │   └── ReconnectModal.razor.js               # Modal behavior script
-    │   │   ├── Pages/                                    # Route-level pages
-    │   │   │   ├── Error.razor                           # Error page
-    │   │   │   ├── NotFound.razor                        # 404 page
-    │   │   │   └── TranslatorPage.razor                  # Main translation interface
-    │   │   ├── Shared/                                   # Shared components
-    │   │   │   └── ChatPanel.razor                       # AI chat assistant panel
-    │   │   └── Translator/                               # Components used by TranslatorPage
-    │   │       ├── CopyButton.razor                      # Copy-to-clipboard button
-    │   │       ├── LanguageSelector.razor                # Dropdown for selecting translation mode
-    │   │       └── TranslationPanel.razor                # Input/output text areas
-    │   ├── Models/
-    │   │   └── TranslationMode.cs                        # Enum/model defining translation modes
-    │   ├── Prolog/                                       # Prolog dictionaries
-    │   │   ├── braille.pl                                # Braille dictionary
-    │   │   ├── minion.pl                                 # Minion dictionary
-    │   │   ├── morse.pl                                  # Morse dictionary
-    │   │   └── orc.pl                                    # Orc dictionary
-    │   ├── Properties/
-    │   │   └── launchSettings.json                       # Debug launch configuration for local development
-    │   ├── Services/                                     # Application services
-    │   │   ├── TranslationModeProvider.cs                # Provides active translation mode
-    │   │   ├── TranslationRegistry.cs                    # Registers available translators
-    │   │   ├── Implementations/                          # Concrete service implementations
-    │   │   │   ├── AIChatService.cs                      # AI chat service
-    │   │   │   ├── PrologTranslationService.cs           # Executes Prolog queries
-    │   │   │   └── Translators/                          # C# translators (English <-> X)
-    │   │   │       ├── BrailleToEnglishTranslator.cs     # Braille → English
-    │   │   │       ├── EnglishToBrailleTranslator.cs     # English → Braille
-    │   │   │       ├── EnglishToMinionTranslator.cs      # English → Minion
-    │   │   │       ├── EnglishToMorseTranslator.cs       # English → Morse
-    │   │   │       ├── EnglishToOrcTranslator.cs         # English → Orc
-    │   │   │       ├── MinionToEnglishTranslator.cs      # Minion → English
-    │   │   │       ├── MorseToEnglishTranslator.cs       # Morse → English
-    │   │   │       └── OrcToEnglishTranslator.cs         # Orc → English
-    │   │   └── Interfaces/                               # Interfaces and abstractions
-    │   │       ├── IAIChatService.cs                     # AI chat interface
-    │   │       ├── IPrologTranslationService.cs          # Interface for Prolog execution service
-    │   │       └── ITranslator.cs                        # Base interface for all translators
-    │   └── wwwroot/                                      # Static web assets
-    │       ├── app.css                                   # Global stylesheet
-    │       └── js/                                       # JavaScript utilities
-    │           ├── clipboard.js                          # Clipboard helper for copy buttons
-    │           └── screen.js                             # Auto-resize and UI utilities
-    └── OmniTranslate_BlazorProlog.Tests/
-        ├── AiChatServiceTests.cs                         # Tests for AI chat service
-        ├── OmniTranslate_BlazorProlog.Tests.csproj       # Test project file
-        └── PrologTranslationServiceTests.cs              # Tests for Prolog translation service
+├── src/
+│   ├── OmniTranslate-BlazorProlog/        # Main Blazor Web App
+│   │   ├── Components/                    # Razor components (Pages, Layout, UI)
+│   │   ├── Prolog/                        # Prolog dictionaries (.pl files)
+│   │   ├── Services/                      # C# Translators, Prolog execution, & AI services
+│   │   └── Models/                        # Data models and enums
+│   └── OmniTranslate_BlazorProlog.Tests/  # Unit test project
+├── README.md                              # Main project documentation
+├── AI.md                                  # Prompts for generating Prolog rules & translators
+├── CONTRIBUTING.md                        # Guide for adding new languages & endpoints
+├── LICENSE                                # License details
+└── CONTRIBUTING.md                        # Guide for adding new languages & endpoints
 ```
+
+For a complete, file-by-file breakdown of the repository, see [ARCHITECTURE.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/ARCHITECTURE.md).
 
 [Back to Table of contents](#toc)
 
@@ -147,45 +91,21 @@ Omnitranslate-blazorprolog/
 
 Below are simple examples showing **input** and **expected output** for each translator.
 
-###  🗣️ English ↔ 🧌 Orc
+| 🗣️ Emglish | 🧌 Orc |
+|------------|------------|
+| Hi, warrior! Buy a weapon. | charach, warrior! goshak a porack. |
 
-🗣️
+| 🗣️ Emglish | 🍌 Minion |
+|------------|------------|
+| Hello, friend! | bello, friend! |
 
-Hi, warrior! Buy a weapon.
+| 🗣️ Emglish | • — Morse  |
+|------------|------------|
+| SOS | ... --- ... |
 
-🧌
-
-charach, warrior! goshak a porack.
-
-### 🗣️ English ↔ 🍌 Minion
-
-🗣️ 
-
-Hello, friend!
-
-🍌
-
-bello, friend!
-
-### <a name="english--morse"> 🗣️ English ↔ • — Morse 
-
-🗣️
-
-SOS
-
-• — 
-
-... --- ...
-
-### <a name="english--braille"> 🗣️ English ↔ 📘 ⠿ Braille  
-
-🗣️
-
-cat
-
-📘 ⠿
-
-⠉ ⠁ ⠞
+| 🗣️ Emglish | 📘 ⠿ Braille    |
+|------------|------------|
+| cat | ⠉ ⠁ ⠞ |
 
 [Back to Table of contents](#toc)
 
