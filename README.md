@@ -70,15 +70,16 @@ Omnitranslate-blazorprolog/
 ├── src/
 │   ├── OmniTranslate-BlazorProlog/        # Main Blazor Web App
 │   │   ├── Components/                    # Razor components (Pages, Layout, UI)
+│   │   ├── Models/                        # Data models and enums
 │   │   ├── Prolog/                        # Prolog dictionaries (.pl files)
 │   │   ├── Services/                      # C# Translators, Prolog execution, & AI services
 │   │   └── Models/                        # Data models and enums
 │   └── OmniTranslate_BlazorProlog.Tests/  # Unit test project
-├── README.md                              # Main project documentation
 ├── AI.md                                  # Prompts for generating Prolog rules & translators
+├── ARCHITECTURE.md                        # Detailed project architecture & directory structure
 ├── CONTRIBUTING.md                        # Guide for adding new languages & endpoints
 ├── LICENSE                                # License details
-└── CONTRIBUTING.md                        # Guide for adding new languages & endpoints
+└── README.md                              # Main project documentation
 ```
 
 For a complete, file-by-file breakdown of the repository, see [ARCHITECTURE.md](https://github.com/g-amador/OmniTranslate-BlazorProlog/blob/main/ARCHITECTURE.md).
