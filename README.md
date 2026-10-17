@@ -49,15 +49,15 @@ This project is ideal for:
 
 ## ✨ <a name="features">Features
 
-- ✔️ Blazor UI with dynamic text areas  
-- ✔️ Prolog‑based dictionaries (`orc.pl`, `minion.pl`, etc.)  
-- ✔️ English → Orc and Orc → English  
-- ✔️ English → Minion and Minion → English  
-- ✔️ Multi‑word expression support  
-- ✔️ Punctuation‑safe translation  
-- ✔️ Newline preservation (`\n`, `\r\n`)  
-- ✔️ Modular translator interface (`ITranslator`)  
-- ✔️ Easy to extend with new languages  
+✔️ Blazor UI with dynamic text areas  
+✔️ Prolog‑based dictionaries (`orc.pl`, `minion.pl`, etc.)  
+✔️ English → Orc and Orc → English  
+✔️ English → Minion and Minion → English  
+✔️ Multi‑word expression support  
+✔️ Punctuation‑safe translation  
+✔️ Newline preservation (`\n`, `\r\n`)  
+✔️ Modular translator interface (`ITranslator`)  
+✔️ Easy to extend with new languages  
 
 [Back to Table of contents](#toc)
 
